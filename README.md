@@ -1,4 +1,4 @@
-# Champion's Forge v7.0 — ETERNAL
+# Champion's Forge v8.6 — ETERNAL
 
 **A single-file HTML habit tracker for warriors who build empires.**
 
