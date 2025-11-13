@@ -4,20 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#00ffff">
+    <meta name="theme-color" content="#1a73e8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="images/icon-192.png">
-    <title>Champion's Forge v7.0 — ETERNAL</title>
+    <title>Champion's Forge — Production Beta</title>
     <style>
         :root {
-            --bg: #000;
-            --card: #111;
-            --accent: #0ff;
-            --red: #f33;
-            --green: #0f0;
-            --blue: #0af;
+            --bg: #0a0e27;
+            --bg-light: #151b3d;
+            --card: #1a2147;
+            --card-hover: #222b54;
+            --primary: #4a90e2;
+            --primary-dark: #2b5fa8;
+            --success: #50c878;
+            --warning: #f5a623;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --text: #e8eaf0;
+            --text-dim: #a0a8c0;
+            --border: #2d3757;
         }
 
         * {
@@ -27,18 +34,26 @@
         }
 
         body {
-            font-family: -apple-system, system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
-            color: #fff;
+            color: var(--text);
             padding: 20px;
+            line-height: 1.6;
         }
 
         h1 {
             text-align: center;
             font-size: 32px;
             margin: 20px 0;
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        h2 {
+            color: var(--text);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
 
         .tabs {
@@ -52,19 +67,23 @@
         .tab-btn {
             padding: 12px 24px;
             background: var(--card);
-            border: 2px solid #333;
-            border-radius: 12px;
-            color: #fff;
-            font-weight: bold;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: var(--card-hover);
+            border-color: var(--primary);
         }
 
         .tab-btn.active {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
         .card {
@@ -72,160 +91,156 @@
             padding: 24px;
             border-radius: 16px;
             margin: 16px 0;
-            text-align: center;
-            border: 1px solid #333;
+            border: 1px solid var(--border);
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
         }
 
         .btn {
-            padding: 16px 32px;
+            padding: 14px 28px;
             margin: 8px;
             border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-info {
+            background: var(--info);
+        }
+
+        .habit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+            gap: 16px;
+            margin: 20px auto;
+            max-width: 1200px;
+            justify-content: center;
+        }
+
+        .habit-card {
+            background: var(--card);
+            padding: 20px;
             border-radius: 12px;
-            font-size: 18px;
+            border: 2px solid var(--border);
+            text-align: center;
+            width: 100%;
+        }
+
+        .habit-card.active {
+            border-color: var(--primary);
+        }
+
+        .habit-status {
+            font-size: 48px;
             font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+            margin: 16px 0;
         }
 
-        .smoke {
-            background: #f33;
-            box-shadow: 0 0 20px #f66;
+        .habit-status.safe {
+            color: var(--success);
         }
 
-        .smoke.warning {
-            background: #fa0;
-            box-shadow: 0 0 20px #fa0;
+        .habit-status.warning {
+            color: var(--warning);
         }
 
-        .smoke.good {
-            background: #0f0;
-            color: #000;
-            box-shadow: 0 0 20px #0f0;
+        .habit-status.danger {
+            color: var(--danger);
         }
 
-        .eat {
-            background: var(--blue);
-        }
-
-        .focus {
-            background: var(--green);
-            color: #000;
-        }
-
-        .stop {
-            background: #900;
-            box-shadow: 0 0 30px #f00;
-            animation: pulse 1.5s infinite;
-        }
-
-        .win {
-            background: #888;
-        }
-
-        .preset {
-            background: #333;
-            padding: 10px 18px;
-            font-size: 14px;
-            margin: 4px;
-            border-radius: 8px;
-            color: #fff;
-            border: 1px solid #555;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .preset:hover {
-            background: #444;
-            border-color: #777;
-        }
-
-        .timer {
-            font-size: 58px;
-            font-weight: bold;
+        .timer-display {
+            font-size: 56px;
+            font-weight: 700;
             margin: 20px 0;
-        }
-
-        .big {
-            font-size: 24px;
+            font-variant-numeric: tabular-nums;
         }
 
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 999;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .modal-content {
             background: var(--card);
             padding: 32px;
-            border-radius: 20px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 440px;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 40px var(--accent);
+            max-width: 500px;
+            border: 2px solid var(--primary);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 100%;
-            padding: 16px;
-            background: #222;
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .btn-small {
-            padding: 12px 24px;
-            margin: 8px;
+            padding: 14px;
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
             font-size: 16px;
+            margin: 10px 0;
+            transition: border-color 0.3s;
         }
 
-        .cancel {
-            background: #444;
-        }
-
-        .history {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding: 12px;
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .entry {
-            background: #222;
+            background: var(--bg-light);
             padding: 16px;
             margin: 10px 0;
-            border-radius: 12px;
-            border-left: 5px solid var(--accent);
-            position: relative;
-            color: #ddd;
-            text-align: left;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 12px;
         }
 
-        .entry-content {
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .entry-delete {
-            background: #600;
-            color: #fff;
+            background: var(--danger);
+            color: white;
             border: none;
             padding: 6px 12px;
             border-radius: 6px;
@@ -233,136 +248,86 @@
             font-size: 12px;
             font-weight: bold;
             transition: 0.3s;
-            flex-shrink: 0;
         }
 
-        .entry-delete:hover {
-            background: #f00;
-            box-shadow: 0 0 10px #f00;
-        }
-
-        .entry::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 5px;
-        }
-
-        .entry b {
-            color: #fff;
-        }
-
-        .entry.smoke {
-            background: linear-gradient(135deg, #300 0%, #222 100%);
-            border-left-color: #f33;
-        }
-
-        .entry.smoke::before {
-            background: linear-gradient(180deg, #f33 0%, #900 100%);
-        }
-
-        .entry.eat {
-            background: linear-gradient(135deg, #003 0%, #222 100%);
-            border-left-color: #0af;
-        }
-
-        .entry.eat::before {
-            background: linear-gradient(180deg, #0af 0%, #047 100%);
-        }
-
-        .entry.focus {
-            background: linear-gradient(135deg, #030 0%, #222 100%);
-            border-left-color: #0f0;
-        }
-
-        .entry.focus::before {
-            background: linear-gradient(180deg, #0f0 0%, #070 100%);
-        }
-
-        .entry.custom {
-            background: linear-gradient(135deg, #303 0%, #222 100%);
-            border-left-color: #c0f;
-        }
-
-        .entry.custom::before {
-            background: linear-gradient(180deg, #c0f 0%, #707 100%);
-        }
-
-        .entry.win {
-            background: linear-gradient(135deg, #330 0%, #222 100%);
-            border-left-color: #fa0;
-        }
-
-        .entry.win::before {
-            background: linear-gradient(180deg, #fa0 0%, #a70 100%);
-        }
-
-        .entry.abort {
-            border-left-color: #f00;
-            background: linear-gradient(135deg, #400 0%, #200 100%);
-            opacity: 0.7;
-        }
-
-        .entry.abort::before {
-            background: linear-gradient(180deg, #f00 0%, #800 100%);
-        }
-
-        .entry-type {
+        .win-category {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 6px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-right: 8px;
+            font-size: 11px;
+            font-weight: 600;
             text-transform: uppercase;
-            flex-shrink: 0;
-            width: auto;
+            margin-right: 8px;
         }
 
-        .custom {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            align-items: center;
-            margin: 15px 0;
+        .cat-health {
+            background: var(--success);
+            color: white;
         }
 
-        .custom input {
-            width: 80px;
-            text-align: center;
-            padding: 12px;
-            background: #222;
+        .cat-work {
+            background: var(--primary);
+            color: white;
+        }
+
+        .cat-personal {
+            background: var(--warning);
+            color: white;
+        }
+
+        .cat-other {
+            background: var(--text-dim);
+            color: white;
+        }
+
+        .timer-loop {
+            background: var(--bg-light);
+            padding: 16px;
             border-radius: 10px;
-            color: #fff;
-            font-size: 18px;
-        }
-
-        .error-banner {
-            background: #600;
-            color: #fff;
-            padding: 12px;
+            margin: 12px auto;
+            max-width: 500px;
             text-align: center;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: none;
         }
 
-        /* Toggle Switch */
-        .switch-container {
+        .timer-loop input {
+            width: 80px;
+            display: inline-block;
+        }
+
+        .timer-loop label {
+            display: inline-block;
+            margin: 8px;
+        }
+
+        .settings-section {
+            margin: 24px 0;
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: 12px;
+        }
+
+        .habit-config {
+            display: grid;
+            gap: 12px;
+            margin: 12px auto;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            max-width: 900px;
+        }
+
+        .habit-config-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin: 15px 0;
+            gap: 12px;
+            padding: 12px;
+            background: var(--card);
+            border-radius: 8px;
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 50px;
+            height: 26px;
         }
 
         .switch input {
@@ -374,475 +339,421 @@
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #333;
-            transition: 0.4s;
-            border-radius: 34px;
+            inset: 0;
+            background-color: var(--border);
+            transition: 0.3s;
+            border-radius: 26px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 18px;
+            width: 18px;
             left: 4px;
             bottom: 4px;
             background-color: white;
-            transition: 0.4s;
+            transition: 0.3s;
             border-radius: 50%;
         }
 
         input:checked+.slider {
-            background-color: #c0f;
+            background-color: var(--primary);
         }
 
         input:checked+.slider:before {
-            transform: translateX(26px);
+            transform: translateX(24px);
         }
 
-        .switch-label {
-            font-size: 18px;
+        .preset-btn {
+            background: var(--bg-light);
+            padding: 10px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--primary);
+            background: var(--card);
+        }
+
+        .streak-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
             font-weight: bold;
+            font-size: 14px;
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
             }
 
-            50% {
-                opacity: 0.8;
+            .timer-display {
+                font-size: 42px;
+            }
+
+            .habit-grid {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+
+            .habit-config {
+                grid-template-columns: 1fr;
+            }
+
+            .habit-config-item {
+                padding: 12px !important;
+            }
+
+            .habit-config-item>div:first-child {
+                font-size: 16px !important;
+            }
+
+            .habit-config-item input[type="number"] {
+                font-size: 14px !important;
+                padding: 6px !important;
             }
         }
     </style>
 </head>
 
 <body>
-    <div id="errorBanner" class="error-banner"></div>
+    <div id="errorBanner" class="error-banner"
+        style="display:none; position:fixed; top:0; left:0; right:0; background:var(--danger); padding:12px; text-align:center; z-index:9999; box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+    </div>
 
-    <h1>CHAMPION'S FORGE v7.0</h1>
+    <h1>🏆 CHAMPION'S FORGE</h1>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="dash" aria-label="Dashboard">DASHBOARD</button>
-        <button class="tab-btn" data-tab="hist" aria-label="History">HISTORY</button>
-        <button class="tab-btn" onclick="Backup.export()" aria-label="Export backup">BACKUP</button>
-        <button class="tab-btn" onclick="Backup.import()" aria-label="Import backup">RESTORE</button>
+        <button class="tab-btn active" data-tab="dash">Dashboard</button>
+        <button class="tab-btn" data-tab="habits">Habits</button>
+        <button class="tab-btn" data-tab="timer">Timer</button>
+        <button class="tab-btn" data-tab="wins">Wins</button>
+        <button class="tab-btn" data-tab="hist">History</button>
+        <button class="tab-btn" data-tab="settings">Settings</button>
     </div>
 
     <!-- DASHBOARD -->
-    <div id="dash" class="page" role="main">
-        <div class="card">
-            <h2>Smoke Slayer</h2>
-            <button class="btn smoke" onclick="Actions.log('smoke')" aria-label="Log smoke">LOG SMOKE</button>
-            <div id="smokeTimer" class="timer" style="color:#f66;" aria-live="polite">0h 0m</div>
+    <div id="dash" class="page">
+        <div class="card" style="text-align:center;">
+            <h2>Today's Overview</h2>
+            <p style="font-size:18px; color:var(--text-dim);">
+                <span id="dailyWins">0</span> Wins •
+                <span id="dailyFocus">0.0</span> Focus Hours •
+                <span id="dailyHabits">0</span> Habits Tracked
+            </p>
         </div>
 
+        <div id="habitDashboard" class="habit-grid"></div>
+    </div>
+
+    <!-- HABITS -->
+    <div id="habits" class="page" style="display:none;">
         <div class="card">
-            <h2>Feast Tamer</h2>
-            <button class="btn eat" onclick="Modal.open('eat')" aria-label="Log meal">LOG EAT</button>
-            <div id="eatTimer" class="timer" style="color:#0ff;" aria-live="polite">0h 0m</div>
+            <h2 style="text-align:center;">Track Your Habits</h2>
+            <p style="color:var(--text-dim); margin-bottom:20px; text-align:center;">Click on any habit to log it.
+                Colors change based on time since last log.</p>
+            <div id="habitTracking" class="habit-grid"></div>
         </div>
+    </div>
 
+    <!-- TIMER -->
+    <div id="timer" class="page" style="display:none;">
         <div class="card">
-            <h2>Procrastination Pulverizer</h2>
-            <div>
-                <button class="preset" onclick="Timer.set('pomo',25,5)">25/5</button>
-                <button class="preset" onclick="Timer.set('pomo',50,10)">50/10</button>
-                <button class="preset" onclick="Timer.set('pomo',90,20)">90/20</button>
-            </div>
-            <div class="custom">
-                <input type="number" id="workIn" value="25" min="1" max="300" aria-label="Work minutes">
-                <span class="big">/</span>
-                <input type="number" id="restIn" value="5" min="1" max="60" aria-label="Rest minutes">
-                <button class="preset" onclick="Timer.custom()">SET</button>
-            </div>
-            <button class="btn focus" onclick="Timer.start('pomo')" id="startBtn">START FOCUS</button>
-            <button class="btn stop" onclick="Timer.stop('pomo')" id="stopBtn" style="display:none;">STOP
-                SESSION</button>
-            <div id="pomoTimer" class="timer" style="color:#0f0;" aria-live="polite">25:00</div>
-            <div id="pomoStatus" class="big" aria-live="polite">Ready</div>
-        </div>
-
-        <div class="card">
-            <h2>Victory Vault</h2>
-            <button class="btn win" onclick="Modal.open('win')" aria-label="Log win">LOG WIN</button>
-        </div>
-
-        <div class="card">
-            <h2>Custom Timer / Stopwatch</h2>
-
-            <div class="switch-container">
-                <span class="switch-label">Timer</span>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+                <h2 style="margin:0;">Focus Timer</h2>
                 <label class="switch">
-                    <input type="checkbox" id="timerModeSwitch" onchange="Timer.toggleMode()">
+                    <input type="checkbox" id="pomodoroToggle" onchange="Timer.togglePomodoro()">
                     <span class="slider"></span>
                 </label>
-                <span class="switch-label">Stopwatch</span>
+                <span style="font-weight:600;">Pomodoro Mode</span>
             </div>
 
-            <div id="timerMode">
-                <div class="custom">
-                    <input type="text" id="customName" placeholder="Activity name" style="width:150px;"
-                        aria-label="Timer name">
-                    <input type="number" id="customMin" value="10" min="1" max="999" style="width:80px;"
-                        aria-label="Minutes">
-                    <span class="big">min</span>
+            <div id="pomodoroSettings" style="display:none;">
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:12px 0;">
+                    <button class="preset-btn" onclick="Timer.setPomodoro(25,5)">25/5</button>
+                    <button class="preset-btn" onclick="Timer.setPomodoro(50,10)">50/10</button>
+                    <button class="preset-btn" onclick="Timer.setPomodoro(90,20)">90/20</button>
+                </div>
+                <div style="text-align:center; margin:12px 0;">
+                    <input type="number" id="pomoWork" value="25" min="1" max="300" style="width:80px;">
+                    <span style="font-size:20px; font-weight:bold;">/</span>
+                    <input type="number" id="pomoRest" value="5" min="1" max="60" style="width:80px;">
+                    <button class="preset-btn" onclick="Timer.setCustomPomodoro()">SET</button>
+                </div>
+
+                <div class="timer-loop">
+                    <label style="font-weight:600;">
+                        <input type="checkbox" id="loopEnabled"> Loop Timer
+                    </label>
+                    <div id="loopSettings" style="margin-top:12px; display:none;">
+                        <label>Repeat <input type="number" id="loopCount" value="3" min="1" max="20"
+                                style="width:60px;"> times</label>
+                    </div>
                 </div>
             </div>
 
-            <div id="stopwatchMode" style="display:none;">
-                <div class="custom">
-                    <input type="text" id="stopwatchName" placeholder="Activity name" style="width:200px;"
-                        aria-label="Stopwatch name">
+            <div id="regularTimer">
+                <div style="text-align:center; margin:20px 0;">
+                    <input type="text" id="timerName" placeholder="Activity name"
+                        style="width:200px; display:inline-block;">
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; gap:15px; margin:15px 0;">
+                    <span style="font-weight:600;">Timer</span>
+                    <label class="switch">
+                        <input type="checkbox" id="stopwatchMode">
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-weight:600;">Stopwatch</span>
+                </div>
+                <div id="timerMinutes" style="text-align:center; margin:12px 0;">
+                    <input type="number" id="timerDuration" value="25" min="1" max="999" style="width:100px;">
+                    <span style="font-size:18px; font-weight:bold;"> minutes</span>
                 </div>
             </div>
 
-            <button class="btn" style="background:#c0f;" onclick="Timer.start('custom')"
-                id="customStartBtn">START</button>
-            <button class="btn stop" onclick="Timer.stop('custom')" id="customStopBtn" style="display:none;">STOP &
-                SAVE</button>
-            <div id="customTimer" class="timer" style="color:#c0f;" aria-live="polite">--:--</div>
-            <div id="customStatus" class="big" aria-live="polite">Ready</div>
+            <div style="text-align:center;">
+                <button class="btn btn-success" onclick="Timer.start()" id="timerStartBtn">START</button>
+                <button class="btn btn-danger" onclick="Timer.stop()" id="timerStopBtn"
+                    style="display:none;">STOP</button>
+            </div>
+
+            <div id="timerDisplay" class="timer-display" style="text-align:center; color:var(--primary);">00:00</div>
+            <div id="timerStatus" style="text-align:center; font-size:18px; color:var(--text-dim);">Ready</div>
+            <div id="loopProgress" style="text-align:center; font-size:16px; color:var(--warning); margin-top:10px;">
+            </div>
         </div>
+    </div>
 
+    <!-- WINS -->
+    <div id="wins" class="page" style="display:none;">
+        <div class="card" style="text-align:center;">
+            <h2>Victory Vault</h2>
+            <button class="btn btn-warning" onclick="Modal.open('win')">+ LOG WIN</button>
+            <div style="margin:20px 0;">
+                <span class="streak-badge">🔥 <span id="winStreak">0</span> Day Streak</span>
+            </div>
+        </div>
         <div class="card">
-            <h2>Today's Stats</h2>
-            <p class="big">
-                Smokes: <b id="smokeCount">0</b> |
-                Eats: <b id="eatCount">0</b> |
-                Completed: <b id="focusCount">0</b> |
-                Hours: <b id="focusHours">0.0</b>
-            </p>
+            <div class="tabs" style="margin:0 0 20px 0;">
+                <button class="tab-btn active" data-win-filter="all">All</button>
+                <button class="tab-btn" data-win-filter="health">Health</button>
+                <button class="tab-btn" data-win-filter="work">Work</button>
+                <button class="tab-btn" data-win-filter="personal">Personal</button>
+                <button class="tab-btn" data-win-filter="other">Other</button>
+            </div>
+            <div id="winsFeed"></div>
         </div>
     </div>
 
     <!-- HISTORY -->
-    <div id="hist" class="page" style="display:none;" role="region" aria-label="History">
-        <div class="tabs">
-            <button class="tab-btn active" data-filter="all">All</button>
-            <button class="tab-btn" data-filter="smoke">Smokes</button>
-            <button class="tab-btn" data-filter="eat">Eats</button>
-            <button class="tab-btn" data-filter="focus">Focus</button>
-            <button class="tab-btn" data-filter="custom">Custom</button>
-            <button class="tab-btn" data-filter="win">Wins</button>
+    <div id="hist" class="page" style="display:none;">
+        <div class="card">
+            <div class="tabs">
+                <button class="tab-btn active" data-filter="all">All</button>
+                <button class="tab-btn" data-filter="habit">Habits</button>
+                <button class="tab-btn" data-filter="focus">Focus</button>
+                <button class="tab-btn" data-filter="win">Wins</button>
+            </div>
+            <div id="historyFeed" style="max-height:70vh; overflow-y:auto; padding:12px;"></div>
         </div>
-        <div class="history" id="historyFeed"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settings" class="page" style="display:none;">
+        <div class="card" style="text-align:center;">
+            <h2>Habit Configuration</h2>
+            <p style="color:var(--text-dim); margin-bottom:20px;">Enable habits you want to track and set time
+                thresholds.</p>
+            <div id="habitSettings"></div>
+            <button class="btn btn-primary" onclick="Settings.saveHabits()">SAVE CHANGES</button>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <h2>Sound Settings</h2>
+            <div style="margin:16px 0;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Sound Type</label>
+                <select id="soundType" style="width:100%; max-width:400px; margin:0 auto;">
+                    <option value="beep">Beep (Default)</option>
+                    <option value="success">Success Chime</option>
+                    <option value="alert">Alert</option>
+                    <option value="soft">Soft Tone</option>
+                </select>
+            </div>
+            <div style="margin:16px 0;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Volume: <span
+                        id="volumeDisplay">30%</span>
+                </label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="30" style="width:100%; max-width:400px;">
+            </div>
+            <div style="margin:16px 0;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Repeat</label>
+                <input type="number" id="soundRepeat" min="1" max="5" value="1" style="width:100px;">
+                <span style="margin-left:8px;">time(s)</span>
+            </div>
+            <button class="btn btn-info" onclick="Settings.testSound()">🔊 TEST SOUND</button>
+            <button class="btn btn-success" onclick="Settings.saveSoundSettings()">💾 SAVE</button>
+        </div>
+
+        <div class="card" style="text-align:center;">
+            <h2>Data Management</h2>
+            <button class="btn btn-info" onclick="Backup.export()">📥 EXPORT BACKUP</button>
+            <button class="btn btn-info" onclick="Backup.import()">📤 IMPORT BACKUP</button>
+            <button class="btn btn-danger" onclick="Settings.clearAll()">🗑️ CLEAR ALL DATA</button>
+        </div>
+
+        <input type="file" id="importFile" accept=".json" style="display:none;">
     </div>
 
     <!-- MODALS -->
-    <div id="eatModal" class="modal" role="dialog" aria-labelledby="eatModalTitle">
+    <div id="winModal" class="modal">
         <div class="modal-content">
-            <h2 id="eatModalTitle">What did you eat?</h2>
-            <input type="text" id="eatInput" placeholder="chicken salad 30g protein" aria-label="Meal description">
+            <h2>Log Your Win 🏆</h2>
+            <select id="winCategory">
+                <option value="health">💪 Health & Fitness</option>
+                <option value="work">💼 Work & Productivity</option>
+                <option value="personal">🌟 Personal Growth</option>
+                <option value="other">📌 Other</option>
+            </select>
+            <textarea id="winInput" placeholder="What did you accomplish?" rows="4"></textarea>
             <div style="text-align:center;">
-                <button class="btn eat btn-small" onclick="Actions.eat()">SAVE</button>
-                <button class="btn cancel btn-small" onclick="Modal.close()">CANCEL</button>
+                <button class="btn btn-warning" onclick="Actions.logWin()">SAVE WIN</button>
+                <button class="btn" style="background:var(--border);" onclick="Modal.close()">CANCEL</button>
             </div>
         </div>
     </div>
 
-    <div id="winModal" class="modal" role="dialog" aria-labelledby="winModalTitle">
+    <div id="customHabitModal" class="modal">
         <div class="modal-content">
-            <h2 id="winModalTitle">Log Your Win</h2>
-            <textarea id="winInput" placeholder="Crushed 100 push-ups" aria-label="Win description"></textarea>
-            <div style="text-align:center;">
-                <button class="btn win btn-small" onclick="Actions.win()">LOG</button>
-                <button class="btn cancel btn-small" onclick="Modal.close()">CANCEL</button>
+            <h2>Create Custom Habit 🎯</h2>
+            <input type="text" id="customHabitName" placeholder="Habit name (e.g., Morning Run)" maxlength="50">
+
+            <div style="margin:16px 0;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Choose Icon:</label>
+                <select id="customHabitIcon" style="width:100%; font-size:20px; padding:8px;">
+                    <option value="🏃">🏃 Running</option>
+                    <option value="🚴">🚴 Cycling</option>
+                    <option value="🏋️">🏋️ Gym</option>
+                    <option value="🧘">🧘 Yoga/Meditation</option>
+                    <option value="📚">📚 Reading</option>
+                    <option value="✍️">✍️ Writing</option>
+                    <option value="🎨">🎨 Art/Creative</option>
+                    <option value="🎵">🎵 Music</option>
+                    <option value="🎮">🎮 Gaming</option>
+                    <option value="📱">📱 Phone/Social Media</option>
+                    <option value="💻">💻 Computer Time</option>
+                    <option value="📺">📺 TV/Netflix</option>
+                    <option value="🍔">🍔 Fast Food</option>
+                    <option value="🍕">🍕 Pizza</option>
+                    <option value="🍰">🍰 Sweets/Dessert</option>
+                    <option value="🥤">🥤 Soda/Sugary Drinks</option>
+                    <option value="☕">☕ Coffee</option>
+                    <option value="🍺">🍺 Alcohol/Beer</option>
+                    <option value="🚬">🚬 Smoking</option>
+                    <option value="💊">💊 Medicine/Drugs</option>
+                    <option value="💰">💰 Shopping/Spending</option>
+                    <option value="🛒">🛒 Grocery Shopping</option>
+                    <option value="💧">💧 Water</option>
+                    <option value="🥗">🥗 Healthy Food</option>
+                    <option value="😴">😴 Sleep</option>
+                    <option value="🧹">🧹 Cleaning</option>
+                    <option value="🚿">🚿 Shower/Hygiene</option>
+                    <option value="🎯">🎯 Goal/Target</option>
+                    <option value="⚡">⚡ Energy/Productivity</option>
+                    <option value="🌟">🌟 Achievement</option>
+                    <option value="❤️">❤️ Health/Wellness</option>
+                    <option value="🧠">🧠 Mental Health</option>
+                    <option value="😊">😊 Mood/Happiness</option>
+                    <option value="🔔">🔔 Reminder</option>
+                    <option value="📊">📊 Tracking</option>
+                    <option value="✅">✅ Task/Todo</option>
+                </select>
+            </div>
+
+            <div style="margin:16px 0;">
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                    <input type="checkbox" id="customHabitSpending" style="width:auto; margin:0;">
+                    <span><strong>💰 Money Tracking Habit</strong> (tracks spending instead of time)</span>
+                </label>
+                <p style="font-size:12px; color:var(--text-dim); margin:4px 0 0 28px; font-style:italic;">
+                    Check this if you want to track money spent, not time since last activity
+                </p>
+            </div>
+
+            <div id="timePeriodSection"
+                style="display:none; margin:16px 0; padding:16px; background:var(--bg-light); border-radius:8px;">
+                <h3 style="font-size:16px; margin-bottom:12px; color:var(--primary);">📅 Tracking Period</h3>
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Period:</label>
+                <select id="timePeriod" style="width:100%; margin-bottom:8px;">
+                    <option value="weekly">Weekly (7 days)</option>
+                    <option value="monthly" selected>Monthly (30 days)</option>
+                    <option value="custom">Custom days</option>
+                </select>
+                <div id="customDaysInput" style="display:none;">
+                    <input type="number" id="customDays" value="14" min="1" max="365" placeholder="Number of days">
+                </div>
+            </div>
+
+            <div id="timeThresholdsSection" style="margin:20px 0;">
+                <h3 id="thresholdTitle" style="font-size:16px; margin-bottom:12px;">⏱️ Time Thresholds (hours):</h3>
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;">
+                    <div id="threshold1Container">
+                        <label id="label1" style="font-size:12px; color:var(--danger); font-weight:600;">🔴
+                            Danger</label>
+                        <input type="number" id="customThreshold1" value="1" min="0" max="9999"
+                            style="width:100%; margin:4px 0;">
+                    </div>
+                    <div id="threshold2Container">
+                        <label id="label2" style="font-size:12px; color:var(--warning); font-weight:600;">⚠️
+                            Warning</label>
+                        <input type="number" id="customThreshold2" value="2" min="0" max="9999"
+                            style="width:100%; margin:4px 0;">
+                    </div>
+                    <div id="threshold3Container">
+                        <label id="label3" style="font-size:12px; color:var(--success); font-weight:600;">✅ Safe</label>
+                        <input type="number" id="customThreshold3" value="4" min="0" max="9999"
+                            style="width:100%; margin:4px 0;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin:20px 0; padding:16px; background:var(--bg-light); border-radius:8px;">
+                <h3 style="font-size:16px; margin-bottom:12px; color:var(--primary);">📝 Logging Options</h3>
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:8px;">
+                    <input type="checkbox" id="customHabitNote" style="width:auto; margin:0;">
+                    <span>📝 Ask for notes when logging</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:8px;">
+                    <input type="checkbox" id="customHabitSpendingCheck" style="width:auto; margin:0;">
+                    <span>💵 Ask for spending amount</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                    <input type="checkbox" id="customHabitPositive" style="width:auto; margin:0;">
+                    <span>✅ Positive Habit (good when done recently - like exercise, water)</span>
+                </label>
+            </div>
+
+            <div style="text-align:center; margin-top:24px;">
+                <button class="btn btn-success" onclick="Actions.createCustomHabit()">CREATE HABIT</button>
+                <button class="btn" style="background:var(--border);" onclick="Modal.close()">CANCEL</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ===== UNIFIED TIMER ENGINE (DRIFT-CORRECTED) =====
-        const Timer = {
-            instances: { pomo: null, custom: null },
-            wakeLock: null,
-
-            async requestWakeLock() {
-                if ('wakeLock' in navigator) {
-                    try {
-                        this.wakeLock = await navigator.wakeLock.request('screen');
-                        console.log('Wake Lock active');
-                        this.wakeLock.addEventListener('release', () => {
-                            console.log('Wake Lock released');
-                        });
-                    } catch (err) {
-                        console.error('Wake Lock failed:', err);
-                    }
-                }
-            },
-
-            releaseWakeLock() {
-                if (this.wakeLock) {
-                    this.wakeLock.release();
-                    this.wakeLock = null;
-                }
-            },
-
-            async requestNotificationPermission() {
-                if ('Notification' in window && Notification.permission === 'default') {
-                    try {
-                        await Notification.requestPermission();
-                    } catch (err) {
-                        console.warn('Notification permission denied:', err);
-                        // Don't block app functionality if notifications fail
-                    }
-                }
-            },
-
-            notify(title, body) {
-                // Vibrate first (works without permissions)
-                if ('vibrate' in navigator) {
-                    navigator.vibrate([200, 100, 200, 100, 200]);
-                }
-
-                // Try notification, fallback to alert
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    try {
-                        new Notification(title, {
-                            body: body,
-                            icon: 'images/icon-192.png',
-                            badge: 'images/icon-192.png',
-                            vibrate: [200, 100, 200]
-                        });
-                    } catch (err) {
-                        console.warn('Notification failed:', err);
-                        alert(`${title}\n${body}`);
-                    }
-                } else if ('Notification' in window && Notification.permission === 'denied') {
-                    // User denied notifications - just use sound
-                    console.log('Notifications blocked by user');
-                } else {
-                    alert(`${title}\n${body}`);
-                }
-
-                Sound.play(1200, 0.3);
-            },
-
-            set(id, w, r) {
-                State.data.work = w;
-                State.data.rest = r;
-                if (!State.data.pomo.running) $('pomoTimer').textContent = `${w}:00`;
-                State.save();
-            },
-
-            custom() {
-                const w = int($('workIn').value), r = int($('restIn').value);
-                if (!w || w < 1 || w > 300) return Utils.err('Work time must be 1-300 minutes');
-                if (!r || r < 1 || r > 60) return Utils.err('Rest time must be 1-60 minutes');
-                this.set('pomo', w, r);
-            },
-
-            toggleMode() {
-                const sw = $('timerModeSwitch').checked;
-                $('timerMode').style.display = sw ? 'none' : 'block';
-                $('stopwatchMode').style.display = sw ? 'block' : 'none';
-                $('customStartBtn').textContent = sw ? 'START STOPWATCH' : 'START TIMER';
-            },
-
-            async start(id) {
-                const isPomo = id === 'pomo';
-                const state = State.data[id];
-                if (state.running) return;
-
-                await this.requestWakeLock();
-                await this.requestNotificationPermission();
-
-                if (isPomo) {
-                    state.running = true;
-                    state.start = Date.now();
-                    state.planned = State.data.work * 60;
-                    state.id = Date.now();
-                    state.isRest = false;
-
-                    $('startBtn').style.display = 'none';
-                    $('stopBtn').style.display = 'inline-block';
-                    $('pomoStatus').textContent = 'WORK — CRUSH IT';
-
-                    State.data.events.push({ type: 'focus', status: 'STARTED', duration: State.data.work, time: Date.now(), session: state.id });
-                } else {
-                    const sw = $('timerModeSwitch').checked;
-                    const name = sw ? $('stopwatchName').value.trim() : $('customName').value.trim();
-                    if (!name) return Utils.err('Please enter an activity name');
-
-                    if (sw) {
-                        state.running = true;
-                        state.start = Date.now();
-                        state.planned = 0;
-                        state.name = name;
-                        state.id = Date.now();
-                        state.isStopwatch = true;
-                        State.data.events.push({ type: 'custom', status: 'STARTED', name, time: Date.now(), session: state.id });
-                    } else {
-                        const min = int($('customMin').value);
-                        if (!min || min < 1 || min > 999) return Utils.err('Minutes must be 1-999');
-                        state.running = true;
-                        state.start = Date.now();
-                        state.planned = min * 60;
-                        state.name = name;
-                        state.id = Date.now();
-                        state.isStopwatch = false;
-                        State.data.events.push({ type: 'custom', status: 'STARTED', name, duration: min, time: Date.now(), session: state.id });
-                    }
-
-                    $('customStartBtn').style.display = 'none';
-                    $('customStopBtn').style.display = 'inline-block';
-                    $('customStatus').textContent = `${name} — Running`;
-                }
-
-                State.save();
-                this.tick(id);
-                // FIX #2: Use drift-correcting interval (recalculates every tick)
-                this.instances[id] = setInterval(() => this.tick(id), 200); // More frequent checks
-            },
-
-            tick(id) {
-                const state = State.data[id];
-                // FIX #2: Always calculate from start time (no drift accumulation)
-                const elapsed = Math.floor((Date.now() - state.start) / 1000);
-
-                if (id === 'custom' && state.isStopwatch) {
-                    $('customTimer').textContent = Utils.fmtSW(elapsed);
-                    return;
-                }
-
-                const remaining = state.planned - elapsed;
-                if (remaining <= 0) {
-                    if (id === 'pomo' && !state.isRest) return this.rest();
-                    return this.finish(id);
-                }
-
-                const m = pad(Math.floor(remaining / 60));
-                const s = pad(remaining % 60);
-                $(id === 'pomo' ? 'pomoTimer' : 'customTimer').textContent = `${m}:${s}`;
-            },
-
-            rest() {
-                State.data.events.push({ type: 'focus', status: 'FINISHED', duration: State.data.work, time: Date.now(), session: State.data.pomo.id });
-                State.data.pomo.start = Date.now();
-                State.data.pomo.planned = State.data.rest * 60;
-                State.data.pomo.isRest = true;
-                $('pomoStatus').textContent = 'REST — BREATHE';
-                $('pomoTimer').style.color = '#0ff';
-                State.save();
-
-                this.notify(
-                    '🔥 WORK COMPLETE!',
-                    `Amazing! Now rest for ${State.data.rest} minutes.`
-                );
-            },
-
-            stop(id) {
-                clearInterval(this.instances[id]);
-                const state = State.data[id];
-                const elapsedMin = Math.floor((Date.now() - state.start) / 60000);
-                state.running = false;
-
-                const anyRunning = State.data.pomo.running || State.data.custom.running;
-                if (!anyRunning) {
-                    this.releaseWakeLock();
-                }
-
-                if (id === 'pomo') {
-                    $('startBtn').style.display = 'inline-block';
-                    $('stopBtn').style.display = 'none';
-                    $('pomoStatus').textContent = 'ABORTED';
-                    $('pomoTimer').textContent = `${State.data.work}:00`;
-                    $('pomoTimer').style.color = '#0f0';
-                    if (!state.isRest) {
-                        State.data.events.push({ type: 'focus', status: 'ABORTED', elapsed: elapsedMin, time: Date.now(), session: state.id });
-                    }
-                } else {
-                    State.data.events.push({
-                        type: 'custom',
-                        status: state.isStopwatch ? 'FINISHED' : 'ABORTED',
-                        name: state.name,
-                        elapsed: elapsedMin,
-                        duration: elapsedMin,
-                        time: Date.now(),
-                        session: state.id
-                    });
-                    $('customStartBtn').style.display = 'inline-block';
-                    $('customStopBtn').style.display = 'none';
-                    $('customStatus').textContent = state.isStopwatch ? 'Completed!' : 'Stopped';
-                    $('customTimer').textContent = '--:--';
-
-                    if (state.isStopwatch) {
-                        this.notify(
-                            '⏱️ Stopwatch Complete!',
-                            `${state.name} finished: ${elapsedMin} minutes`
-                        );
-                    }
-                }
-
-                State.save();
-                UI.update();
-            },
-
-            finish(id) {
-                clearInterval(this.instances[id]);
-                const state = State.data[id];
-                state.running = false;
-
-                const anyRunning = State.data.pomo.running || State.data.custom.running;
-                if (!anyRunning) {
-                    this.releaseWakeLock();
-                }
-
-                if (id === 'pomo') {
-                    $('startBtn').style.display = 'inline-block';
-                    $('stopBtn').style.display = 'none';
-                    $('pomoStatus').textContent = 'COMPLETE — LEGEND';
-                    $('pomoTimer').textContent = `${State.data.work}:00`;
-                    $('pomoTimer').style.color = '#0f0';
-
-                    this.notify(
-                        '🏆 FULL SESSION COMPLETED!',
-                        'You are a champion! Work + Rest done.'
-                    );
-                } else {
-                    State.data.events.push({ type: 'custom', status: 'FINISHED', name: state.name, duration: Math.floor(state.planned / 60), time: Date.now(), session: state.id });
-                    $('customStartBtn').style.display = 'inline-block';
-                    $('customStopBtn').style.display = 'none';
-                    $('customStatus').textContent = 'FINISHED!';
-                    $('customTimer').textContent = '00:00';
-
-                    this.notify(
-                        '✅ Timer Complete!',
-                        `${state.name} finished!`
-                    );
-                }
-
-                State.save();
-                UI.update();
-            },
-
-            async resume(id) {
-                const state = State.data[id];
-                await this.requestWakeLock();
-
-                if (id === 'pomo') {
-                    $('startBtn').style.display = 'none';
-                    $('stopBtn').style.display = 'inline-block';
-                    $('pomoStatus').textContent = state.isRest ? 'REST — RESUMED' : 'WORK — RESUMED';
-                    $('pomoTimer').style.color = state.isRest ? '#0ff' : '#0f0';
-                } else {
-                    $('customStartBtn').style.display = 'none';
-                    $('customStopBtn').style.display = 'inline-block';
-                    $('customStatus').textContent = `${state.name} — Resumed`;
-                    if (state.isStopwatch) {
-                        $('timerModeSwitch').checked = true;
-                        this.toggleMode();
-                    }
-                }
-                this.tick(id);
-                this.instances[id] = setInterval(() => this.tick(id), 200);
-            }
+        // ===== DEFAULT HABITS CONFIGURATION =====
+        const DEFAULT_HABITS = {
+            smoking: { name: '🚬 Smoking', enabled: true, thresholds: [1, 2, 3], icon: '🚬', isDefault: true, trackingMode: 'time', note: false, trackSpending: false, isPositive: false },
+            eating: { name: '🍽️ Meal Tracking', enabled: true, thresholds: [2, 4, 6], icon: '🍽️', isDefault: true, trackingMode: 'time', note: true, trackSpending: true, isPositive: false },
+            spending: { name: '💰 Money Spending', enabled: false, thresholds: [50, 100, 200], icon: '💰', isDefault: true, trackingMode: 'money', note: true, trackSpending: true, isPositive: false, timePeriod: 'monthly', customDays: 30 }
         };
 
         // ===== UTILITIES =====
@@ -868,7 +779,7 @@
                 setTimeout(() => b.style.display = 'none', 5000);
             },
             valid(d) {
-                return d && typeof d === 'object' && Array.isArray(d.events) && typeof d.lastSmoke === 'number' && typeof d.lastEat === 'number';
+                return d && typeof d === 'object' && Array.isArray(d.events);
             }
         };
 
@@ -877,7 +788,7 @@
             db: null,
             init() {
                 return new Promise((ok, fail) => {
-                    const r = indexedDB.open('EternalForge', 1);
+                    const r = indexedDB.open('EternalForge', 2);
                     r.onupgradeneeded = e => {
                         this.db = e.target.result;
                         if (!this.db.objectStoreNames.contains('state')) {
@@ -885,14 +796,13 @@
                         }
                     };
                     r.onsuccess = e => { this.db = e.target.result; ok(); };
-                    r.onerror = e => { console.error('DB Error:', e.target.error); Utils.err('Database failed'); fail(); };
+                    r.onerror = e => { console.error('DB Error:', e.target.error); fail(); };
                 });
             },
             save(key, data) {
                 if (!this.db) return;
                 const tx = this.db.transaction('state', 'readwrite');
                 tx.objectStore('state').put({ id: key, data });
-                tx.onerror = () => Utils.err('Failed to save');
             },
             load(key) {
                 return new Promise(ok => {
@@ -904,349 +814,1611 @@
             }
         };
 
+        // ===== SOUND =====
+        const Sound = {
+            settings: { type: 'beep', volume: 0.3, repeat: 1 },
+
+            play(customFreq = null, customDur = null) {
+                try {
+                    const settings = this.settings;
+                    const repeat = settings.repeat || 1;
+
+                    for (let i = 0; i < repeat; i++) {
+                        setTimeout(() => {
+                            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.connect(gain);
+                            gain.connect(ctx.destination);
+
+                            let freq = customFreq || 1200;
+                            let dur = customDur || 0.3;
+
+                            if (settings.type === 'success') {
+                                freq = 800 + (i * 200);
+                                dur = 0.2;
+                            } else if (settings.type === 'alert') {
+                                freq = 1500;
+                                dur = 0.5;
+                            } else if (settings.type === 'soft') {
+                                freq = 600;
+                                dur = 0.4;
+                            }
+
+                            osc.frequency.value = freq;
+                            osc.type = settings.type === 'soft' ? 'sine' : 'square';
+                            gain.gain.setValueAtTime(settings.volume, ctx.currentTime);
+                            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur);
+                            osc.start(ctx.currentTime);
+                            osc.stop(ctx.currentTime + dur);
+                        }, i * 400);
+                    }
+                } catch (err) { console.error('Sound Error:', err); }
+            },
+
+            loadSettings() {
+                const saved = localStorage.getItem('soundSettings');
+                if (saved) {
+                    this.settings = JSON.parse(saved);
+                }
+            },
+
+            saveSettings() {
+                localStorage.setItem('soundSettings', JSON.stringify(this.settings));
+            }
+        };
+
         // ===== STATE =====
         const State = {
             data: {
                 events: [],
-                lastSmoke: 0,
-                lastEat: 0,
-                work: 25,
-                rest: 5,
-                pomo: { running: false, start: 0, planned: 0, id: null, isRest: false },
-                custom: { running: false, start: 0, planned: 0, name: '', id: null, isStopwatch: false }
+                habits: JSON.parse(JSON.stringify(DEFAULT_HABITS)),
+                habitLog: {},
+                spendingCategories: [],
+                timer: { running: false, start: 0, planned: 0, name: '', mode: 'timer', pomoEnabled: false, loop: { enabled: false, count: 3, current: 0, isRest: false } },
+                pomoSettings: { work: 25, rest: 5 }
             },
             async load() {
                 const saved = await DB.load(1);
                 if (saved && Utils.valid(saved)) {
-                    this.data = saved;
-                    if (!this.data.pomo.hasOwnProperty('isRest')) this.data.pomo.isRest = false;
-                    if (!this.data.custom) this.data.custom = { running: false, start: 0, planned: 0, name: '', id: null, isStopwatch: false };
-                    if (!this.data.custom.hasOwnProperty('isStopwatch')) this.data.custom.isStopwatch = false;
-                    if (this.data.pomo.running) Timer.resume('pomo');
-                    if (this.data.custom.running) Timer.resume('custom');
+                    this.data = { ...this.data, ...saved };
+
+                    // Ensure all required properties exist
+                    if (!this.data.habits) this.data.habits = JSON.parse(JSON.stringify(DEFAULT_HABITS));
+                    if (!this.data.habitLog) this.data.habitLog = {};
+                    if (!this.data.spendingCategories) this.data.spendingCategories = [];
+                    if (!this.data.timer) this.data.timer = { running: false, start: 0, planned: 0, name: '', mode: 'timer' };
+                    if (!this.data.timer.loop) this.data.timer.loop = { enabled: false, count: 3, current: 0, isRest: false };
+                    if (!this.data.pomoSettings) this.data.pomoSettings = { work: 25, rest: 5 };
+
+                    // Sync habits with defaults and migrate to new structure
+                    Object.keys(DEFAULT_HABITS).forEach(key => {
+                        if (!this.data.habits[key]) {
+                            this.data.habits[key] = JSON.parse(JSON.stringify(DEFAULT_HABITS[key]));
+                        }
+                    });
+
+                    // Migrate existing habits to new structure
+                    Object.keys(this.data.habits).forEach(key => {
+                        const habit = this.data.habits[key];
+
+                        // Add trackingMode if missing
+                        if (!habit.trackingMode) {
+                            habit.trackingMode = habit.isMoneyOnly ? 'money' : 'time';
+                        }
+
+                        // Add isPositive if missing
+                        if (!habit.hasOwnProperty('isPositive')) {
+                            habit.isPositive = false;
+                        }
+
+                        // Migrate old canTrackSpending to trackSpending
+                        if (habit.hasOwnProperty('canTrackSpending') && !habit.hasOwnProperty('trackSpending')) {
+                            habit.trackSpending = false;
+                            habit.note = habit.note || false;
+                        }
+
+                        // Add time period for money habits
+                        if (habit.trackingMode === 'money') {
+                            if (!habit.timePeriod) habit.timePeriod = 'monthly';
+                            if (!habit.customDays) habit.customDays = 30;
+                        }
+
+                        // Clean up old properties
+                        delete habit.canTrackSpending;
+                        delete habit.trackValue;
+                        delete habit.monthlyTotal;
+                        delete habit.isMoneyOnly;
+                        delete habit.trackDuration;
+                    });
+
+                    this.save();
+                    if (this.data.timer.running) Timer.resume();
                 }
             },
             save() {
-                // FIX #7: Auto-trim to last 5000 events to prevent bloat
                 if (this.data.events.length > 5000) {
                     this.data.events = this.data.events.slice(-5000);
-                    console.log('✂️ Trimmed history to last 5000 entries');
                 }
                 DB.save(1, this.data);
+            },
+
+            getMonthlyTotal(habitKey) {
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+                return State.data.events
+                    .filter(e => e.type === 'habit' && e.habit === habitKey && e.time >= firstDay && e.value)
+                    .reduce((sum, e) => sum + parseFloat(e.value || 0), 0);
             }
         };
 
-        // ===== PWA INSTALL HANDLER =====
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            console.log('✅ PWA Install prompt available!');
+        // ===== TIMER ENGINE (OPTIMIZED) =====
+        const Timer = {
+            instance: null,
+            wakeLock: null,
+            lastUpdate: 0,
 
-            // Show custom install button
-            const installBtn = document.createElement('button');
-            installBtn.textContent = '📱 INSTALL APP';
-            installBtn.className = 'btn';
-            installBtn.style.cssText = 'position:fixed; bottom:20px; right:20px; background:#0ff; color:#000; z-index:1000; box-shadow:0 0 20px #0ff;';
-            installBtn.onclick = async () => {
-                if (!deferredPrompt) return;
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User ${outcome} the install`);
-                deferredPrompt = null;
-                installBtn.remove();
-            };
-            document.body.appendChild(installBtn);
-        });
-
-        window.addEventListener('appinstalled', () => {
-            console.log('✅ PWA installed successfully!');
-        });
-
-        // ===== UI =====
-        const UI = {
-            updateTimers() {
-                const now = Date.now();
-                // FIX #6: Use themed placeholder instead of "Never"
-                $('smokeTimer').textContent = State.data.lastSmoke === 0 ? '--:--' : Utils.fmt(now - State.data.lastSmoke);
-                $('eatTimer').textContent = State.data.lastEat === 0 ? '--:--' : Utils.fmt(now - State.data.lastEat);
-                if (State.data.lastSmoke > 0) Actions.updateSmoke();
+            async requestWakeLock() {
+                if ('wakeLock' in navigator) {
+                    try {
+                        this.wakeLock = await navigator.wakeLock.request('screen');
+                    } catch (err) { console.error('Wake Lock failed:', err); }
+                }
             },
-            updateStats() {
-                const today = new Date().toDateString();
-                const day = State.data.events.filter(e => new Date(e.time).toDateString() === today);
-                $('smokeCount').textContent = day.filter(e => e.type === 'smoke').length;
-                $('eatCount').textContent = day.filter(e => e.type === 'eat').length;
-                $('focusCount').textContent = day.filter(e => e.type === 'focus' && e.status === 'FINISHED').length;
-                const fh = day.filter(e => e.type === 'focus' && e.status === 'FINISHED').reduce((a, e) => a + (e.duration || 0), 0) / 60;
-                const ch = day.filter(e => e.type === 'custom' && (e.status === 'FINISHED' || e.status === 'ABORTED')).reduce((a, e) => a + (e.duration || e.elapsed || 0), 0) / 60;
-                $('focusHours').textContent = (fh + ch).toFixed(1);
+
+            releaseWakeLock() {
+                if (this.wakeLock) {
+                    this.wakeLock.release();
+                    this.wakeLock = null;
+                }
             },
-            renderHistory(filter = 'all') {
-                const feed = $('historyFeed');
-                feed.innerHTML = '';
 
-                // FIX #7: Limit to last 1200 entries
-                let list = filter === 'all' ? State.data.events : State.data.events.filter(e => e.type === filter);
-                const total = list.length;
-                list = list.slice(-1200); // Keep only last 1200
+            notify(title, body) {
+                if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
 
-                // Show counter if entries were trimmed
-                if (total > 1200) {
-                    const notice = document.createElement('div');
-                    notice.style.cssText = 'text-align:center; padding:16px; color:#fa0; font-weight:bold;';
-                    notice.textContent = `📊 Showing last 1200 of ${total} total entries`;
-                    feed.appendChild(notice);
+                // Request notification permission on first timer use
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification(title, { body, icon: 'images/icon-192.png' });
+                        }
+                    });
+                } else if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification(title, { body, icon: 'images/icon-192.png' });
                 }
 
-                list.sort((a, b) => b.time - a.time).forEach(e => {
+                Sound.play();
+            },
+
+            togglePomodoro() {
+                const enabled = $('pomodoroToggle').checked;
+                $('pomodoroSettings').style.display = enabled ? 'block' : 'none';
+                $('regularTimer').style.display = enabled ? 'none' : 'block';
+                State.data.timer.pomoEnabled = enabled;
+                State.save();
+            },
+
+            setPomodoro(w, r) {
+                State.data.pomoSettings = { work: w, rest: r };
+                State.save();
+            },
+
+            setCustomPomodoro() {
+                const w = int($('pomoWork').value), r = int($('pomoRest').value);
+                if (!w || w < 1 || w > 300) return Utils.err('Work time must be 1-300 minutes');
+                if (!r || r < 1 || r > 60) return Utils.err('Rest time must be 1-60 minutes');
+                this.setPomodoro(w, r);
+            },
+
+            async start() {
+                if (State.data.timer.running) return;
+                await this.requestWakeLock();
+
+                // Reset timer display color
+                $('timerDisplay').style.color = 'var(--primary)';
+
+                const pomo = State.data.timer.pomoEnabled;
+                const isStopwatch = !pomo && $('stopwatchMode').checked;
+                const name = pomo ? 'Pomodoro Session' : $('timerName').value.trim();
+
+                if (!name && !pomo) return Utils.err('Please enter activity name');
+
+                if (pomo) {
+                    const loopEnabled = $('loopEnabled').checked;
+                    State.data.timer = {
+                        running: true,
+                        start: Date.now(),
+                        planned: State.data.pomoSettings.work * 60,
+                        name: 'Pomodoro',
+                        mode: 'pomodoro',
+                        pomoEnabled: true,
+                        loop: {
+                            enabled: loopEnabled,
+                            count: loopEnabled ? int($('loopCount').value) : 1,
+                            current: 1,
+                            isRest: false
+                        }
+                    };
+                    $('timerStatus').textContent = `Work Session ${State.data.timer.loop.current}/${State.data.timer.loop.count}`;
+                } else if (isStopwatch) {
+                    State.data.timer = {
+                        running: true,
+                        start: Date.now(),
+                        planned: 0,
+                        name,
+                        mode: 'stopwatch',
+                        pomoEnabled: false
+                    };
+                    $('timerStatus').textContent = `${name} — Running`;
+                } else {
+                    const min = int($('timerDuration').value);
+                    if (!min || min < 1) return Utils.err('Duration must be at least 1 minute');
+                    State.data.timer = {
+                        running: true,
+                        start: Date.now(),
+                        planned: min * 60,
+                        name,
+                        mode: 'timer',
+                        pomoEnabled: false
+                    };
+                    $('timerStatus').textContent = `${name} — Running`;
+                }
+
+                $('timerStartBtn').style.display = 'none';
+                $('timerStopBtn').style.display = 'inline-block';
+
+                State.data.events.push({ type: 'focus', status: 'STARTED', name: State.data.timer.name, time: Date.now() });
+                State.save();
+
+                // FIX #5: Use requestAnimationFrame instead of setInterval
+                this.lastUpdate = performance.now();
+                this.animationLoop();
+            },
+
+            animationLoop() {
+                if (!State.data.timer.running) return;
+
+                const now = performance.now();
+                // Update every ~200ms (reduce CPU usage)
+                if (now - this.lastUpdate >= 200) {
+                    this.tick();
+                    this.lastUpdate = now;
+                }
+
+                this.instance = requestAnimationFrame(() => this.animationLoop());
+            },
+
+            tick() {
+                const t = State.data.timer;
+                const elapsed = Math.floor((Date.now() - t.start) / 1000);
+
+                if (t.mode === 'stopwatch') {
+                    $('timerDisplay').textContent = Utils.fmtSW(elapsed);
+                    return;
+                }
+
+                const remaining = t.planned - elapsed;
+                if (remaining <= 0) {
+                    if (t.pomoEnabled && !t.loop.isRest) {
+                        this.startRest();
+                    } else if (t.pomoEnabled && t.loop.isRest && t.loop.current < t.loop.count) {
+                        this.nextLoop();
+                    } else {
+                        this.finish();
+                    }
+                    return;
+                }
+
+                const m = pad(Math.floor(remaining / 60)),
+                    s = pad(remaining % 60);
+                $('timerDisplay').textContent = `${m}:${s}`;
+            },
+
+            startRest() {
+                State.data.events.push({ type: 'focus', status: 'WORK_COMPLETE', duration: State.data.pomoSettings.work, time: Date.now() });
+                State.data.timer.start = Date.now();
+                State.data.timer.planned = State.data.pomoSettings.rest * 60;
+                State.data.timer.loop.isRest = true;
+                $('timerStatus').textContent = `Rest ${State.data.timer.loop.current}/${State.data.timer.loop.count}`;
+                $('timerDisplay').style.color = 'var(--info)';
+                State.save();
+                this.notify('🔥 Work Complete!', `Great job! Rest for ${State.data.pomoSettings.rest} minutes.`);
+            },
+
+            nextLoop() {
+                State.data.timer.loop.current++;
+                State.data.timer.loop.isRest = false;
+                State.data.timer.start = Date.now();
+                State.data.timer.planned = State.data.pomoSettings.work * 60;
+                $('timerStatus').textContent = `Work Session ${State.data.timer.loop.current}/${State.data.timer.loop.count}`;
+                $('timerDisplay').style.color = 'var(--success)';
+                $('loopProgress').textContent = `Loop ${State.data.timer.loop.current}/${State.data.timer.loop.count}`;
+                State.save();
+                this.notify('🔄 Next Round!', `Starting work session ${State.data.timer.loop.current}`);
+            },
+
+            stop() {
+                cancelAnimationFrame(this.instance);
+                this.releaseWakeLock();
+
+                const elapsed = Math.floor((Date.now() - State.data.timer.start) / 60000);
+                State.data.events.push({
+                    type: 'focus',
+                    status: State.data.timer.mode === 'stopwatch' ? 'FINISHED' : 'STOPPED',
+                    name: State.data.timer.name,
+                    duration: elapsed,
+                    time: Date.now()
+                });
+
+                State.data.timer.running = false;
+                $('timerStartBtn').style.display = 'inline-block';
+                $('timerStopBtn').style.display = 'none';
+                $('timerStatus').textContent = State.data.timer.mode === 'stopwatch' ? 'Completed!' : 'Stopped';
+                $('timerDisplay').textContent = '00:00';
+                $('loopProgress').textContent = '';
+
+                State.save();
+                UI.update();
+            },
+
+            finish() {
+                cancelAnimationFrame(this.instance);
+                this.releaseWakeLock();
+
+                State.data.events.push({
+                    type: 'focus',
+                    status: 'FINISHED',
+                    name: State.data.timer.name,
+                    duration: Math.floor(State.data.timer.planned / 60),
+                    time: Date.now()
+                });
+
+                State.data.timer.running = false;
+                $('timerStartBtn').style.display = 'inline-block';
+                $('timerStopBtn').style.display = 'none';
+                $('timerStatus').textContent = '🏆 Complete!';
+                $('timerDisplay').textContent = '00:00';
+                $('loopProgress').textContent = '';
+
+                this.notify('✅ Timer Complete!', `${State.data.timer.name} finished!`);
+                State.save();
+                UI.update();
+            },
+
+            async resume() {
+                await this.requestWakeLock();
+                $('timerStartBtn').style.display = 'none';
+                $('timerStopBtn').style.display = 'inline-block';
+                this.lastUpdate = performance.now();
+                this.animationLoop();
+            }
+        };
+
+        // ===== UI (SECURITY FIXES) =====
+        const UI = {
+            habitUpdateInterval: null,
+
+            renderHabits() {
+                const dash = $('habitDashboard');
+                const track = $('habitTracking');
+
+                dash.innerHTML = '';
+                track.innerHTML = '';
+
+                const today = new Date().toDateString();
+
+                Object.entries(State.data.habits).forEach(([key, habit]) => {
+                    if (!habit.enabled) return;
+
+                    const last = State.data.habitLog[key] || 0;
+                    const [t1, t2, t3] = habit.thresholds;
+
+                    // Count today's logs for this habit
+                    const todayCount = State.data.events.filter(e =>
+                        e.type === 'habit' &&
+                        e.habit === key &&
+                        new Date(e.time).toDateString() === today
+                    ).length;
+
+                    let status = 'safe', color = 'var(--success)';
+                    let displayText = '';
+                    let extraInfo = '';
+
+                    // Money tracking mode
+                    if (habit.trackingMode === 'money') {
+                        // Calculate period in days based on timePeriod setting
+                        let periodDays = 30; // default
+                        if (habit.timePeriod === 'weekly') {
+                            periodDays = 7;
+                        } else if (habit.timePeriod === 'monthly') {
+                            periodDays = 30;
+                        } else if (habit.timePeriod === 'custom' && habit.customDays) {
+                            periodDays = habit.customDays;
+                        }
+
+                        const periodStart = Date.now() - (periodDays * 86400000);
+                        const total = State.data.events
+                            .filter(e => e.type === 'habit' && e.habit === key && e.time >= periodStart && e.value)
+                            .reduce((sum, e) => sum + parseFloat(e.value || 0), 0);
+
+                        console.log(`💰 Money habit ${key}:`, { periodDays, total, events: State.data.events.filter(e => e.habit === key) });
+
+                        displayText = `$${total.toFixed(2)}`;
+
+                        // Money thresholds: t1=safe, t2=warning, t3=danger (ascending order)
+                        if (total < t1) { status = 'safe'; color = 'var(--success)'; }
+                        else if (total < t2) { status = 'warning'; color = 'var(--warning)'; }
+                        else { status = 'danger'; color = 'var(--danger)'; }
+
+                        const periodLabel = habit.timePeriod === 'weekly' ? 'This week' :
+                            habit.timePeriod === 'monthly' ? 'This month' :
+                                `Last ${periodDays} days`;
+                        extraInfo = `<div style="font-size:12px; color:var(--text-dim); margin-top:4px;">${periodLabel}</div>`;
+                    }
+                    // Time tracking mode
+                    else {
+                        const hours = last ? (Date.now() - last) / 3600000 : 999;
+
+                        // Time thresholds: t1=safe, t2=warning, t3=danger (descending order for display)
+                        // Positive habits (inverted logic - good when done recently)
+                        if (habit.isPositive) {
+                            if (hours > t3) { status = 'danger'; color = 'var(--danger)'; }
+                            else if (hours > t2) { status = 'warning'; color = 'var(--warning)'; }
+                            else { status = 'safe'; color = 'var(--success)'; }
+                        }
+                        // Negative habits (normal logic - bad when done recently)
+                        else {
+                            // thresholds are stored as [danger, warning, safe] for time-based habits
+                            if (hours < t1) { status = 'danger'; color = 'var(--danger)'; }
+                            else if (hours < t2) { status = 'warning'; color = 'var(--warning)'; }
+                            else { status = 'safe'; color = 'var(--success)'; }
+                        }
+
+                        displayText = last ? Utils.fmt(Date.now() - last) : '--:--';
+
+                        // Show spending total if there's any spending data (regardless of toggle)
+                        const monthlySpending = State.data.events
+                            .filter(e => e.type === 'habit' && e.habit === key && e.value &&
+                                e.time >= Date.now() - (30 * 86400000))
+                            .reduce((sum, e) => sum + parseFloat(e.value || 0), 0);
+
+                        if (monthlySpending > 0) {
+                            extraInfo = `<div style="font-size:14px; color:var(--info); margin-top:8px; text-align:center;">💰 $${monthlySpending.toFixed(2)} this month</div>`;
+                        }
+                    }
+
+                    // Add today's count badge
+                    const countBadge = todayCount > 0
+                        ? `<div style="position:absolute; top:12px; right:12px; background:var(--primary); color:white; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold;">
+                            ×${todayCount}
+                           </div>`
+                        : '';
+
+                    let buttonText = habit.trackingMode === 'money' ? 'LOG SPENDING' : `LOG ${habit.name.split(' ')[1]?.toUpperCase() || 'IT'}`;
+
+                    // Create DOM element
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = `habit-card ${last || habit.trackingMode === 'money' ? 'active' : ''}`;
+                    cardDiv.dataset.habit = key;
+                    cardDiv.style.position = 'relative';
+                    cardDiv.innerHTML = `
+                        ${countBadge}
+                        <h3 style="text-align:center; margin-bottom:12px;">${habit.icon} ${habit.name}</h3>
+                        <div class="habit-status ${status}" style="color:${color}; text-align:center;">
+                            ${displayText}
+                        </div>
+                        ${extraInfo}
+                        <button class="btn btn-primary" data-log-habit="${key}">
+                            ${buttonText}
+                        </button>
+                    `;
+
+                    dash.appendChild(cardDiv);
+                    track.appendChild(cardDiv.cloneNode(true));
+                });
+
+                this.attachHabitListeners();
+            },
+
+            updateHabitTimers() {
+                document.querySelectorAll('.habit-card').forEach(card => {
+                    const key = card.dataset.habit;
+                    const habit = State.data.habits[key];
+                    const statusDiv = card.querySelector('.habit-status');
+
+                    if (!statusDiv) return;
+
+                    if (habit && habit.isMoneyOnly) {
+                        // Update money total
+                        const total = State.getMonthlyTotal(key);
+                        statusDiv.textContent = `$${total.toFixed(2)}`;
+                    } else {
+                        // Update time since last log
+                        const last = State.data.habitLog[key] || 0;
+                        if (last) {
+                            statusDiv.textContent = Utils.fmt(Date.now() - last);
+                        }
+                    }
+                });
+            },
+
+            attachHabitListeners() {
+                // Remove old listeners to prevent duplicates
+                document.querySelectorAll('[data-log-habit]').forEach(btn => {
+                    btn.replaceWith(btn.cloneNode(true));
+                });
+
+                // Add new listeners with delegation
+                document.querySelectorAll('[data-log-habit]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        Actions.logHabit(btn.dataset.logHabit);
+                    });
+                });
+            },
+
+            renderWins(filter = 'all') {
+                const feed = $('winsFeed');
+                const wins = State.data.events.filter(e => e.type === 'win' && (filter === 'all' || e.category === filter));
+
+                feed.innerHTML = wins.length === 0 ? '<p style="text-align:center; color:var(--text-dim);">No wins yet. Start logging your victories!</p>' : '';
+
+                wins.sort((a, b) => b.time - a.time).slice(0, 100).forEach(w => {
+                    const catClass = `cat-${w.category || 'other'}`;
+                    const catLabel = (w.category || 'other').toUpperCase();
                     const div = document.createElement('div');
-                    div.className = `entry ${e.type}`;
-                    if (e.status === 'ABORTED') div.classList.add('abort');
-                    const date = new Date(e.time).toLocaleString();
+                    div.className = 'entry';
+                    div.style.borderLeftColor = 'var(--warning)';
 
-                    let text = '', typeLabel = '';
-                    if (e.type === 'smoke') { typeLabel = '<span class="entry-type smoke">SMOKE</span>'; text = 'Logged'; }
+                    const safeNote = document.createElement('span');
+                    safeNote.textContent = w.note;
 
-                    // FIX #5: CRITICAL - Use textContent to prevent XSS
-                    if (e.type === 'eat') {
-                        typeLabel = '<span class="entry-type eat">EAT</span>';
-                        const safeNote = document.createElement('span');
-                        safeNote.textContent = e.note || 'Unknown';
-                        text = safeNote.outerHTML;
-                    }
+                    const contentDiv = document.createElement('div');
+                    contentDiv.style.flex = '1';
+                    contentDiv.innerHTML = `
+                        <span class="win-category ${catClass}">${catLabel}</span>
+                        <b>${new Date(w.time).toLocaleString()}</b><br>
+                    `;
+                    contentDiv.appendChild(safeNote);
 
-                    if (e.type === 'win') {
-                        typeLabel = '<span class="entry-type win">WIN</span>';
-                        const safeNote = document.createElement('span');
-                        safeNote.textContent = e.note || 'Win';
-                        text = safeNote.outerHTML;
-                    }
+                    // FIX #1: Use event listener instead of onclick
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'entry-delete';
+                    deleteBtn.textContent = '✕';
+                    deleteBtn.addEventListener('click', () => Actions.deleteEvent(w.time));
 
-                    if (e.type === 'focus') {
-                        typeLabel = '<span class="entry-type focus">FOCUS</span>';
-                        if (e.status === 'STARTED') text = `Started ${e.duration}min session`;
-                        if (e.status === 'FINISHED') text = `Completed ${e.duration}min session`;
-                        if (e.status === 'ABORTED') text = `Aborted after ${e.elapsed}min`;
-                    }
+                    div.appendChild(contentDiv);
+                    div.appendChild(deleteBtn);
+                    feed.appendChild(div);
+                });
 
-                    if (e.type === 'custom') {
-                        typeLabel = '<span class="entry-type custom">CUSTOM</span>';
+                // Calculate streak
+                const today = new Date().setHours(0, 0, 0, 0);
+                let streak = 0;
+                for (let i = 0; i < 365; i++) {
+                    const day = today - (i * 86400000);
+                    const hasWin = State.data.events.some(e => e.type === 'win' && new Date(e.time).setHours(0, 0, 0, 0) === day);
+                    if (hasWin) streak++;
+                    else break;
+                }
+                $('winStreak').textContent = streak;
+            },
+
+            renderHistory(filter = 'all') {
+                const feed = $('historyFeed');
+                let events = filter === 'all' ? State.data.events : State.data.events.filter(e => e.type === filter);
+                events = events.slice(-500);
+
+                feed.innerHTML = '';
+                events.sort((a, b) => b.time - a.time).forEach(e => {
+                    const div = document.createElement('div');
+                    div.className = 'entry';
+
+                    let text = '';
+                    if (e.type === 'habit') {
+                        const habit = State.data.habits[e.habit];
+                        let extra = '';
+                        if (e.value) extra += ` <strong style="color:var(--warning);">$${e.value.toFixed(2)}</strong>`;
+                        if (e.spendingNote) {
+                            const safeSpending = document.createElement('span');
+                            safeSpending.textContent = e.spendingNote;
+                            extra += ` on ${safeSpending.textContent}`;
+                        }
+                        if (e.duration) extra += ` (${e.duration}min)`;
+                        if (e.note) {
+                            const safeNote = document.createElement('span');
+                            safeNote.textContent = e.note;
+                            extra += ` - ${safeNote.textContent}`;
+                        }
+                        text = `${habit?.icon || '📌'} ${habit?.name || e.habit} logged${extra}`;
+                    } else if (e.type === 'focus') {
+                        // FIX: Sanitize e.name
                         const safeName = document.createElement('span');
                         safeName.textContent = e.name;
-                        const nameHtml = safeName.outerHTML;
-
-                        if (e.status === 'STARTED') text = `${nameHtml} — Started ${e.duration ? e.duration + 'min' : 'stopwatch'}`;
-                        if (e.status === 'FINISHED') text = `${nameHtml} — ${e.duration}min`;
-                        if (e.status === 'ABORTED') text = `${nameHtml} — ${e.elapsed}min`;
+                        text = `⏱️ ${e.status}: ${safeName.textContent} (${e.duration || 0}min)`;
+                    } else if (e.type === 'win') {
+                        const safeNote = document.createElement('span');
+                        safeNote.textContent = e.note;
+                        text = `🏆 Win: ${safeNote.textContent}`;
                     }
 
-                    div.innerHTML = `<div class="entry-content">${typeLabel}<b>${date}</b> — ${text}</div><button class="entry-delete" onclick="Actions.deleteEvent(${e.time})">✕</button>`;
+                    const contentDiv = document.createElement('div');
+                    contentDiv.style.flex = '1';
+                    contentDiv.innerHTML = `<b>${new Date(e.time).toLocaleString()}</b> — ${text}`;
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'entry-delete';
+                    deleteBtn.textContent = '✕';
+                    deleteBtn.addEventListener('click', () => Actions.deleteEvent(e.time));
+
+                    div.appendChild(contentDiv);
+                    div.appendChild(deleteBtn);
                     feed.appendChild(div);
                 });
             },
+
+            updateDashboard() {
+                const today = new Date().toDateString();
+                const todayEvents = State.data.events.filter(e => new Date(e.time).toDateString() === today);
+
+                $('dailyWins').textContent = todayEvents.filter(e => e.type === 'win').length;
+
+                const focusHours = todayEvents
+                    .filter(e => e.type === 'focus' && e.status === 'FINISHED')
+                    .reduce((sum, e) => sum + (e.duration || 0), 0) / 60;
+                $('dailyFocus').textContent = focusHours.toFixed(1);
+
+                // Count unique habits logged today (not total logs)
+                const uniqueHabits = new Set(todayEvents.filter(e => e.type === 'habit').map(e => e.habit));
+                $('dailyHabits').textContent = uniqueHabits.size;
+
+                // Calculate spending totals
+                const dailySpending = todayEvents
+                    .filter(e => e.type === 'habit' && e.value)
+                    .reduce((sum, e) => sum + parseFloat(e.value || 0), 0);
+
+                const weekStart = Date.now() - (7 * 86400000);
+                const weeklySpending = State.data.events
+                    .filter(e => e.type === 'habit' && e.value && e.time >= weekStart)
+                    .reduce((sum, e) => sum + parseFloat(e.value || 0), 0);
+
+                const monthStart = Date.now() - (30 * 86400000);
+                const monthlySpending = State.data.events
+                    .filter(e => e.type === 'habit' && e.value && e.time >= monthStart)
+                    .reduce((sum, e) => sum + parseFloat(e.value || 0), 0);
+
+                // Update overview display
+                const overviewText = document.querySelector('#dash .card p');
+                if (overviewText) {
+                    let spendingHTML = '';
+                    if (dailySpending > 0 || weeklySpending > 0 || monthlySpending > 0) {
+                        spendingHTML = `<br><div style="margin-top:12px; padding:12px; background:var(--bg-light); border-radius:8px; border:2px solid var(--warning);">
+                            <div style="font-weight:600; color:var(--warning); margin-bottom:8px;">💰 Spending Tracker</div>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:8px; font-size:14px;">
+                                <div><strong>Today:</strong> $${dailySpending.toFixed(2)}</div>
+                                <div><strong>Week:</strong> $${weeklySpending.toFixed(2)}</div>
+                                <div><strong>Month:</strong> $${monthlySpending.toFixed(2)}</div>
+                            </div>
+                        </div>`;
+                    }
+
+                    overviewText.innerHTML = `
+                        <span id="dailyWins">${todayEvents.filter(e => e.type === 'win').length}</span> Wins •
+                        <span id="dailyFocus">${focusHours.toFixed(1)}</span> Focus Hours •
+                        <span id="dailyHabits">${uniqueHabits.size}</span> Unique Habits
+                        ${spendingHTML}
+                    `;
+                }
+            },
+
             update() {
-                this.updateTimers();
-                this.updateStats();
-                if ($('hist').style.display !== 'none') {
-                    const activeFilter = document.querySelector('#hist [data-filter].active')?.dataset.filter || 'all';
-                    this.renderHistory(activeFilter);
+                this.renderHabits();
+                this.updateDashboard();
+            },
+
+            // FIX #4: Start habit refresh interval
+            startHabitRefresh() {
+                this.stopHabitRefresh();
+                this.habitUpdateInterval = setInterval(() => {
+                    if (!document.hidden) {
+                        this.updateHabitTimers();
+                    }
+                }, 60000);
+            },
+
+            // FIX #4: Stop habit refresh interval
+            stopHabitRefresh() {
+                if (this.habitUpdateInterval) {
+                    clearInterval(this.habitUpdateInterval);
+                    this.habitUpdateInterval = null;
                 }
             }
         };
 
         // ===== ACTIONS =====
         const Actions = {
-            log(type) {
+            logHabit(key) {
+                const habit = State.data.habits[key];
+                let note = null, value = null;
+
+                console.log('🔍 Logging habit:', key, 'Config:', habit);
+
+                // For money tracking habits: ask note first (what was it for?), then amount
+                if (habit.trackingMode === 'money') {
+                    // Step 1: Ask what it was for (only if note checkbox was enabled)
+                    if (habit.note) {
+                        note = prompt('What did you spend on?');
+                        if (note === null) return; // User cancelled
+                        console.log('📝 Note:', note);
+                    }
+
+                    // Step 2: Ask for amount (required)
+                    const input = prompt('How much did you spend? ($)');
+                    if (input === null || input.trim() === '') return; // User cancelled or empty
+
+                    value = parseFloat(input.trim());
+                    if (isNaN(value) || value < 0) {
+                        Utils.err('Please enter a valid amount');
+                        return;
+                    }
+                    console.log('💵 Value:', value);
+                }
+                // For time tracking habits: ask note first if enabled, then optional spending
+                else {
+                    // Step 1: Ask for note if enabled
+                    if (habit.note) {
+                        note = prompt(`Note for ${habit.name}:`);
+                        if (note === null) return; // User cancelled
+                        console.log('📝 Note:', note);
+                    }
+
+                    // Step 2: Ask for spending if enabled (optional)
+                    if (habit.trackSpending) {
+                        console.log('💰 Asking for spending...');
+                        const input = prompt('How much did you spend? ($)\n\nPress Cancel to skip if nothing.');
+
+                        if (input !== null && input.trim() !== '') {
+                            value = parseFloat(input.trim());
+                            if (isNaN(value) || value < 0) {
+                                Utils.err('Please enter a valid amount');
+                                return;
+                            }
+                            console.log('💵 Value:', value);
+                        }
+                    }
+                }
+
+                // Step 3: Log the habit
                 const now = Date.now();
-                if (type === 'smoke') { State.data.lastSmoke = now; this.updateSmoke(); }
-                State.data.events.push({ type, time: now });
+
+                // Update timestamp only for time-based habits
+                if (habit.trackingMode === 'time') {
+                    State.data.habitLog[key] = now;
+                }
+
+                State.data.events.push({
+                    type: 'habit',
+                    habit: key,
+                    value: value || null,
+                    note: note || null,
+                    time: now
+                });
+
+                // Auto-save every habit log
                 State.save();
                 UI.update();
             },
-            updateSmoke() {
-                const btn = document.querySelector('.btn.smoke');
-                const hours = (Date.now() - State.data.lastSmoke) / 3600000;
-                btn.classList.remove('warning', 'good');
-                if (hours >= 2.5) btn.classList.add('good');
-                else if (hours >= 1.5) btn.classList.add('warning');
-            },
-            eat() {
-                const note = $('eatInput').value.trim() || 'Food';
+
+            logWin() {
+                const category = $('winCategory').value;
+                const input = $('winInput').value.trim();
+
+                if (!input) return Utils.err('Win description cannot be empty');
+
                 const now = Date.now();
-                State.data.events.push({ type: 'eat', note, time: now });
-                State.data.lastEat = now;
-                $('eatInput').value = '';
-                Modal.close();
-                State.save();
-                UI.update();
-            },
-            win() {
-                const note = $('winInput').value.trim();
-                if (!note) return Utils.err('Please describe your win');
-                State.data.events.push({ type: 'win', note, time: Date.now() });
+                State.data.events.push({
+                    type: 'win',
+                    category,
+                    note: input,
+                    time: now
+                });
+
+                // Update streak
+                const today = new Date().setHours(0, 0, 0, 0);
+                let streak = 0;
+                for (let i = 0; i < 365; i++) {
+                    const day = today - (i * 86400000);
+                    const hasWin = State.data.events.some(e => e.type === 'win' && new Date(e.time).setHours(0, 0, 0, 0) === day);
+                    if (hasWin) streak++;
+                    else break;
+                }
+                $('winStreak').textContent = streak;
+
+                // Close modal and clear input
                 $('winInput').value = '';
                 Modal.close();
                 State.save();
                 UI.update();
+
+                // Refresh wins tab if currently active
+                const currentTab = document.querySelector('.tab-btn.active')?.dataset.tab;
+                if (currentTab === 'wins') UI.renderWins();
             },
-            deleteEvent(timestamp) {
-                if (!confirm('Delete this entry? This cannot be undone.')) return;
-                const idx = State.data.events.findIndex(e => e.time === timestamp);
-                if (idx !== -1) {
-                    const e = State.data.events[idx];
-                    if (e.type === 'smoke' && e.time === State.data.lastSmoke) {
-                        const prev = State.data.events.filter(ev => ev.type === 'smoke' && ev.time < timestamp).sort((a, b) => b.time - a.time)[0];
-                        State.data.lastSmoke = prev ? prev.time : 0;
-                    }
-                    if (e.type === 'eat' && e.time === State.data.lastEat) {
-                        const prev = State.data.events.filter(ev => ev.type === 'eat' && ev.time < timestamp).sort((a, b) => b.time - a.time)[0];
-                        State.data.lastEat = prev ? prev.time : 0;
-                    }
-                    State.data.events.splice(idx, 1);
+
+            deleteEvent(time) {
+                if (!confirm('Delete this entry?')) return;
+
+                const index = State.data.events.findIndex(e => e.time === time);
+                if (index !== -1) {
+                    State.data.events.splice(index, 1);
                     State.save();
-                    UI.update();
+
+                    // Re-render current view
+                    const currentTab = document.querySelector('.tab-btn.active').dataset.tab;
+                    if (currentTab === 'wins') UI.renderWins();
+                    if (currentTab === 'hist') UI.renderHistory();
+                    if (currentTab === 'dash') UI.update();
                 }
+            },
+
+            createCustomHabit() {
+                const name = $('customHabitName').value.trim();
+                const icon = $('customHabitIcon').value.trim() || '📌';
+                const t1 = parseInt($('customThreshold1').value) || 1;
+                const t2 = parseInt($('customThreshold2').value) || 2;
+                const t3 = parseInt($('customThreshold3').value) || 4;
+                const hasNote = $('customHabitNote').checked;
+                const hasSpending = $('customHabitSpendingCheck').checked;
+                const isMoneyTracking = $('customHabitSpending').checked;
+                const isPositive = $('customHabitPositive').checked;
+                const timePeriod = $('timePeriod').value;
+                const customDays = parseInt($('customDays').value) || 30;
+
+                if (!name) {
+                    Utils.err('Please enter a habit name');
+                    return;
+                }
+
+                if (name.length < 3) {
+                    Utils.err('Habit name must be at least 3 characters');
+                    return;
+                }
+
+                // Create unique key from name
+                const key = 'custom_' + name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+
+                // Check if already exists
+                if (State.data.habits[key]) {
+                    Utils.err('A habit with this name already exists');
+                    return;
+                }
+
+                const trackingMode = isMoneyTracking ? 'money' : 'time';
+
+                // For money mode, thresholds are stored in reverse order due to visual swap
+                // t3 is Safe (lowest), t2 is Warning, t1 is Danger (highest)
+                let thresholds;
+                if (isMoneyTracking) {
+                    // Validate ascending: Safe < Warning < Danger
+                    if (t3 >= t2 || t2 >= t1) {
+                        Utils.err(`Thresholds must be in ascending order: Safe < Warning < Danger (e.g., $100, $200, $300)`);
+                        return;
+                    }
+                    thresholds = [t3, t2, t1]; // Store as [Safe, Warning, Danger] = [100, 200, 300]
+                } else {
+                    // Validate ascending: Danger < Warning < Safe
+                    if (t1 >= t2 || t2 >= t3) {
+                        Utils.err(`Thresholds must be in ascending order (e.g., 1hr, 2hr, 4hr)`);
+                        return;
+                    }
+                    thresholds = [t1, t2, t3]; // Store as [Danger, Warning, Safe] = [1, 2, 4]
+                }
+
+                // Calculate period in days
+                let periodDays = 30;
+                if (isMoneyTracking) {
+                    if (timePeriod === 'weekly') periodDays = 7;
+                    else if (timePeriod === 'monthly') periodDays = 30;
+                    else periodDays = customDays;
+                }
+
+                // Create new habit
+                State.data.habits[key] = {
+                    name: `${icon} ${name}`,
+                    icon: icon,
+                    enabled: true,
+                    thresholds: thresholds,
+                    note: hasNote,
+                    trackSpending: hasSpending,
+                    trackingMode: trackingMode,
+                    isPositive: isPositive,
+                    timePeriod: isMoneyTracking ? timePeriod : null,
+                    customDays: isMoneyTracking ? periodDays : null,
+                    isCustom: true
+                };
+
+                State.save();
+                UI.update();
+
+                Modal.close();
+
+                // Clear form after a short delay (wait for modal to start closing)
+                setTimeout(() => {
+                    $('customHabitName').value = '';
+                    $('customHabitIcon').selectedIndex = 0; // Reset dropdown to first option
+                    $('customThreshold1').value = '1';
+                    $('customThreshold2').value = '2';
+                    $('customThreshold3').value = '4';
+                    $('customHabitNote').checked = false;
+                    $('customHabitSpendingCheck').checked = false;
+                    $('customHabitSpending').checked = false;
+                    $('customHabitPositive').checked = false;
+                    $('timePeriodSection').style.display = 'none';
+                    $('customHabitPositive').parentElement.style.display = 'flex'; // Show positive habit checkbox
+
+                    // Reset to time mode display
+                    const title = $('thresholdTitle');
+                    title.textContent = '⏱️ Time Thresholds (hours):';
+                    const thresholdGrid = $('timeThresholdsSection').querySelector('div');
+                    thresholdGrid.innerHTML = '';
+                    thresholdGrid.appendChild($('threshold1Container'));
+                    thresholdGrid.appendChild($('threshold2Container'));
+                    thresholdGrid.appendChild($('threshold3Container'));
+                    $('label1').textContent = '🔴 Danger';
+                    $('label2').textContent = '⚠️ Warning';
+                    $('label3').textContent = '✅ Safe';
+                }, 350);
+
+                Utils.err('✅ Custom habit created successfully!');
+
+                // Switch to settings tab to show the new habit
+                document.querySelector('[data-tab="settings"]').click();
+                renderSettings(); // Refresh settings view to show new habit
+            }
+        };
+
+        // ===== SETTINGS =====
+        const Settings = {
+            saveHabits() {
+                const habitElements = document.querySelectorAll('.habit-config-item');
+                habitElements.forEach(el => {
+                    const key = el.dataset.habit;
+                    const enabled = el.querySelector('input[type="checkbox"]').checked;
+                    const nums = Array.from(el.querySelectorAll('input[type="number"]'))
+                        .map(i => parseInt(i.value, 10))
+                        .filter(v => !isNaN(v));
+
+                    if (State.data.habits[key]) {
+                        const habit = State.data.habits[key];
+                        State.data.habits[key].enabled = enabled;
+
+                        if (nums.length === 3) {
+                            const [a, b, c] = nums; // visual order per habit type
+                            let mapped;
+                            if (habit.trackingMode === 'money') {
+                                // UI shows Safe, Warning, Danger → store [safe, warning, danger]
+                                mapped = [a, b, c];
+                            } else if (habit.isPositive) {
+                                // UI shows Safe, Warning, Danger → store [danger, warning, safe]
+                                mapped = [c, b, a];
+                            } else {
+                                // UI shows Danger, Warning, Safe → store [danger, warning, safe]
+                                mapped = [a, b, c];
+                            }
+                            State.data.habits[key].thresholds = mapped;
+                        }
+                    }
+                });
+
+                State.save();
+                UI.update();
+                Utils.err('✅ Settings saved successfully!');
+            },
+
+            saveSoundSettings() {
+                Sound.settings.type = $('soundType').value;
+                Sound.settings.volume = $('volumeSlider').value / 100;
+                Sound.settings.repeat = $('soundRepeat').value;
+
+                Sound.saveSettings();
+                Utils.err('✅ Sound settings saved!');
+            },
+
+            testSound() {
+                Sound.play(1200, 0.3);
+            },
+
+            clearAll() {
+                if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                    localStorage.clear();
+                    indexedDB.deleteDatabase('EternalForge');
+                    location.reload();
+                }
+            }
+        };
+
+        // ===== BACKUP =====
+        const Backup = {
+            export() {
+                const dataStr = JSON.stringify(State.data, null, 4);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `champion_forge_backup_${Date.now()}.json`;
+                a.click();
+
+                URL.revokeObjectURL(url);
+            },
+
+            import() {
+                const fileInput = $('importFile');
+                fileInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        try {
+                            const data = JSON.parse(evt.target.result);
+
+                            // Validate data structure
+                            if (!data.events || !Array.isArray(data.events)) {
+                                Utils.err('Invalid backup file format');
+                                return;
+                            }
+
+                            // Merge data
+                            State.data = { ...State.data, ...data };
+                            State.save();
+                            UI.update();
+                            Utils.err('✅ Backup imported successfully!');
+                        } catch (err) {
+                            console.error('Import error:', err);
+                            Utils.err('Failed to import backup file');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                fileInput.click();
             }
         };
 
         // ===== MODAL =====
         const Modal = {
             open(id) {
-                const m = $(id + 'Modal');
-                m.style.display = 'flex';
-                const inp = m.querySelector('input, textarea');
-                if (inp) setTimeout(() => inp.focus(), 100);
+                const modal = $(id + 'Modal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    setTimeout(() => modal.classList.add('show'), 10);
+                }
             },
-            close() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-        };
 
-        // ===== BACKUP =====
-        const Backup = {
-            export() {
-                const blob = new Blob([JSON.stringify(State.data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `FORGE_${new Date().toISOString().slice(0, 10)}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                alert('Backup downloaded!');
-            },
-            import() {
-                const inp = document.createElement('input');
-                inp.type = 'file';
-                inp.accept = '.json';
-                inp.onchange = async e => {
-                    try {
-                        const file = e.target.files[0];
-                        if (!file) return;
-                        const text = await file.text();
-                        const data = JSON.parse(text);
-                        if (!Utils.valid(data)) throw new Error('Invalid backup format');
-                        if (State.data.pomo.running) clearInterval(Timer.instances.pomo);
-                        if (State.data.custom.running) clearInterval(Timer.instances.custom);
-                        State.data = data;
-                        State.save();
-                        UI.update();
-                        alert('Backup restored successfully!');
-                        location.reload();
-                    } catch (err) {
-                        Utils.err('Invalid backup file: ' + err.message);
-                    }
-                };
-                inp.click();
+            close() {
+                document.querySelectorAll('.modal').forEach(m => {
+                    m.classList.remove('show');
+                    setTimeout(() => { m.style.display = 'none'; }, 300);
+                });
             }
         };
 
-        // ===== SOUND =====
-        const Sound = {
-            play(freq, dur) {
-                try {
-                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.frequency.value = freq;
-                    osc.type = 'sine';
-                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur);
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + dur);
-                } catch (err) { console.error('Sound Error:', err); }
-            }
-        };
-
-        // ===== INIT =====
+        // App initialization
         document.addEventListener('DOMContentLoaded', async () => {
+            // Load settings
+            Sound.loadSettings();
+            const savedVolume = localStorage.getItem('volume');
+            if (savedVolume) {
+                $('volumeSlider').value = savedVolume;
+                Sound.settings.volume = savedVolume / 100;
+            }
+
+            // Initialize database
             await DB.init();
-            await State.load();
-            UI.update();
-            setInterval(() => UI.updateTimers(), 1000);
-            setInterval(() => UI.updateStats(), 30000);
 
-            document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
-                btn.onclick = () => {
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    const tab = btn.dataset.tab;
-                    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-                    if (tab) {
-                        $(tab).style.display = 'block';
-                        if (tab === 'hist') UI.renderHistory('all');
-                    }
-                };
+            // Load state
+            State.load().then(() => {
+                UI.update();
+                // Start habit refresh interval
+                UI.startHabitRefresh();
             });
+        });
 
-            document.querySelectorAll('#hist [data-filter]').forEach(btn => {
-                btn.onclick = () => {
-                    document.querySelectorAll('#hist [data-filter]').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    UI.renderHistory(btn.dataset.filter);
-                };
+        // ===== TAB NAVIGATION =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                if (!tab) return;
+
+                // Update active button
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Show selected page
+                document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+                const page = $(tab);
+                if (page) {
+                    page.style.display = 'block';
+
+                    // Render content when switching to specific tabs
+                    if (tab === 'wins') UI.renderWins();
+                    if (tab === 'hist') UI.renderHistory();
+                    if (tab === 'settings') renderSettings();
+                }
             });
+        });
 
-            document.addEventListener('keydown', e => { if (e.key === 'Escape') Modal.close(); });
-            document.querySelectorAll('.modal').forEach(m => {
-                m.addEventListener('click', e => { if (e.target === m) Modal.close(); });
+        // ===== WIN FILTER NAVIGATION =====
+        document.querySelectorAll('[data-win-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.winFilter;
+                document.querySelectorAll('[data-win-filter]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                UI.renderWins(filter);
             });
+        });
 
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.error('SW failed:', err));
+        // ===== HISTORY FILTER NAVIGATION =====
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                UI.renderHistory(filter);
+            });
+        });
+
+        // ===== LOOP TIMER TOGGLE =====
+        $('loopEnabled').addEventListener('change', (e) => {
+            $('loopSettings').style.display = e.target.checked ? 'block' : 'none';
+        });
+
+        // ===== STOPWATCH MODE TOGGLE =====
+        $('stopwatchMode').addEventListener('change', (e) => {
+            $('timerMinutes').style.display = e.target.checked ? 'none' : 'block';
+        });
+
+        // ===== VOLUME SLIDER =====
+        $('volumeSlider').addEventListener('input', (e) => {
+            $('volumeDisplay').textContent = e.target.value + '%';
+            Sound.settings.volume = e.target.value / 100;
+        });
+
+        // ===== CLOSE MODAL ON BACKGROUND CLICK =====
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) Modal.close();
+            });
+        });
+
+        // ===== CUSTOM HABIT MODAL TOGGLES =====
+        $('customHabitSpending').addEventListener('change', (e) => {
+            const isMoneyMode = e.target.checked;
+
+            // Show/hide period selection
+            $('timePeriodSection').style.display = isMoneyMode ? 'block' : 'none';
+
+            // Show/hide positive habit checkbox (can't be positive when tracking money)
+            $('customHabitPositive').parentElement.style.display = isMoneyMode ? 'none' : 'flex';
+            if (isMoneyMode) $('customHabitPositive').checked = false;
+
+            // Auto-check spending amount
+            $('customHabitSpendingCheck').checked = isMoneyMode;
+
+            // Update threshold title
+            const title = $('thresholdTitle');
+            const thresholdGrid = $('timeThresholdsSection').querySelector('div');
+            const container1 = $('threshold1Container');
+            const container2 = $('threshold2Container');
+            const container3 = $('threshold3Container');
+
+            if (isMoneyMode) {
+                // Money mode: Swap visual order to Green -> Yellow -> Red
+                title.textContent = '💰 Money Thresholds ($):';
+
+                // Rearrange DOM order
+                thresholdGrid.innerHTML = '';
+                thresholdGrid.appendChild(container3); // Safe (green) first
+                thresholdGrid.appendChild(container2); // Warning (yellow) second
+                thresholdGrid.appendChild(container1); // Danger (red) last
+
+                // Update labels
+                $('label1').textContent = '🔴 Danger ($)';
+                $('label2').textContent = '⚠️ Warning ($)';
+                $('label3').textContent = '✅ Safe ($)';
+
+                // Set money values to match visual order after DOM swap
+                // container3 (Safe) appears first, container2 (Warning) second, container1 (Danger) last
+                $('customThreshold3').value = '100';  // Safe (green) - lowest threshold
+                $('customThreshold2').value = '200';  // Warning (yellow) - middle threshold
+                $('customThreshold1').value = '300';  // Danger (red) - highest threshold
+            } else {
+                // Time mode: Standard order Red -> Yellow -> Green
+                title.textContent = '⏱️ Time Thresholds (hours):';
+
+                // Restore DOM order
+                thresholdGrid.innerHTML = '';
+                thresholdGrid.appendChild(container1); // Danger (red) first
+                thresholdGrid.appendChild(container2); // Warning (yellow) second
+                thresholdGrid.appendChild(container3); // Safe (green) last
+
+                // Update labels
+                $('label1').textContent = '🔴 Danger';
+                $('label2').textContent = '⚠️ Warning';
+                $('label3').textContent = '✅ Safe';
+
+                // Set time values
+                $('customThreshold1').value = '1';
+                $('customThreshold2').value = '2';
+                $('customThreshold3').value = '4';
             }
-
-            // Check manifest
-            fetch('manifest.json')
-                .then(r => r.json())
-                .then(manifest => {
-                    console.log('✅ Manifest loaded:', manifest);
-                    // Check icons exist
-                    fetch(manifest.icons[0].src)
-                        .then(r => r.ok ? console.log('✅ Icon 192 exists') : console.error('❌ Icon 192 missing'))
-                        .catch(() => console.error('❌ Icon 192 missing'));
-                })
-                .catch(err => console.error('❌ Manifest not found:', err));
         });
 
-        // FIX #4: Detect when tab becomes visible again
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                // Tab is now visible - force timer update
-                if (State.data.pomo.running) Timer.tick('pomo');
-                if (State.data.custom.running) Timer.tick('custom');
-                UI.updateTimers();
-                console.log('Tab visible - timers synchronized');
+        $('timePeriod').addEventListener('change', (e) => {
+            $('customDaysInput').style.display = e.target.value === 'custom' ? 'block' : 'none';
+        });
+
+        // Positive habit toggle
+        $('customHabitPositive').addEventListener('change', (e) => {
+            const isPositive = e.target.checked;
+            const isMoneyMode = $('customHabitSpending').checked;
+
+            // Don't change anything if money mode is active
+            if (isMoneyMode) return;
+
+            const label1 = $('label1');
+            const label2 = $('label2');
+            const label3 = $('label3');
+            const input1 = $('customThreshold1');
+            const input2 = $('customThreshold2');
+            const input3 = $('customThreshold3');
+
+            if (isPositive) {
+                // Positive: Good when done recently (reverse colors)
+                label1.innerHTML = '✅ Safe';
+                label1.style.color = 'var(--success)';
+                label2.innerHTML = '⚠️ Warning';
+                label2.style.color = 'var(--warning)';
+                label3.innerHTML = '🔴 Danger';
+                label3.style.color = 'var(--danger)';
+
+                input1.value = '1';
+                input2.value = '2';
+                input3.value = '4';
+            } else {
+                // Negative: Bad when done recently (normal)
+                label1.innerHTML = '🔴 Danger';
+                label1.style.color = 'var(--danger)';
+                label2.innerHTML = '⚠️ Warning';
+                label2.style.color = 'var(--warning)';
+                label3.innerHTML = '✅ Safe';
+                label3.style.color = 'var(--success)';
+
+                input1.value = '1';
+                input2.value = '2';
+                input3.value = '4';
             }
         });
 
+        function renderSettings() {
+            const container = $('habitSettings');
+            if (!container) return;
 
-        window.addEventListener('beforeunload', () => {
-            clearInterval(Timer.instances.pomo);
-            clearInterval(Timer.instances.custom);
-        });
+            container.innerHTML = '';
+
+            // Add "Create Custom Habit" button at the top
+            const createBtn = document.createElement('button');
+            createBtn.className = 'btn btn-success';
+            createBtn.textContent = '➕ CREATE CUSTOM HABIT';
+            createBtn.style.marginBottom = '20px';
+            createBtn.onclick = () => Modal.open('customHabit');
+            container.appendChild(createBtn);
+
+            const configDiv = document.createElement('div');
+            configDiv.className = 'habit-config';
+
+            Object.entries(State.data.habits).forEach(([key, habit]) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'habit-config-item';
+                itemDiv.dataset.habit = key;
+                itemDiv.style.display = 'flex';
+                itemDiv.style.flexDirection = 'column';
+                itemDiv.style.gap = '12px';
+                itemDiv.style.padding = '16px';
+                itemDiv.style.background = habit.enabled ? 'var(--card)' : 'var(--bg-light)';
+                itemDiv.style.border = `2px solid ${habit.enabled ? 'var(--primary)' : 'var(--border)'}`;
+                itemDiv.style.borderRadius = '12px';
+                itemDiv.style.transition = 'all 0.3s';
+
+                // Add colored left border accent for special habit types
+                if (habit.isPositive) {
+                    itemDiv.style.borderLeft = '4px solid var(--success)';
+                } else if (habit.trackingMode === 'money') {
+                    itemDiv.style.borderLeft = '4px solid var(--info)';
+                }
+
+                // Header row with checkbox and name
+                const headerDiv = document.createElement('div');
+                headerDiv.style.display = 'flex';
+                headerDiv.style.alignItems = 'center';
+                headerDiv.style.gap = '12px';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = habit.enabled;
+                checkbox.style.width = 'auto';
+                checkbox.style.margin = '0';
+                checkbox.style.cursor = 'pointer';
+                checkbox.id = `habit-enable-${key}`;
+
+                const label = document.createElement('label');
+                label.textContent = habit.name;
+                label.htmlFor = `habit-enable-${key}`;
+                label.style.margin = '0';
+                label.style.cursor = 'pointer';
+                label.style.fontSize = '18px';
+                label.style.fontWeight = '600';
+                label.style.flex = '1';
+
+                // Add custom badge if it's a custom habit
+                if (habit.isCustom) {
+                    const customBadge = document.createElement('span');
+                    customBadge.textContent = 'CUSTOM';
+                    customBadge.style.background = 'var(--warning)';
+                    customBadge.style.color = 'white';
+                    customBadge.style.padding = '2px 8px';
+                    customBadge.style.borderRadius = '4px';
+                    customBadge.style.fontSize = '10px';
+                    customBadge.style.fontWeight = 'bold';
+                    label.appendChild(document.createTextNode(' '));
+                    label.appendChild(customBadge);
+                }
+
+                checkbox.addEventListener('change', () => {
+                    itemDiv.style.background = checkbox.checked ? 'var(--card)' : 'var(--bg-light)';
+                    itemDiv.style.borderColor = checkbox.checked ? 'var(--primary)' : 'var(--border)';
+                });
+
+                headerDiv.appendChild(checkbox);
+                headerDiv.appendChild(label);
+
+                // Add delete button for custom habits
+                if (habit.isCustom) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '🗑️';
+                    deleteBtn.style.background = 'var(--danger)';
+                    deleteBtn.style.color = 'white';
+                    deleteBtn.style.border = 'none';
+                    deleteBtn.style.padding = '6px 12px';
+                    deleteBtn.style.borderRadius = '6px';
+                    deleteBtn.style.cursor = 'pointer';
+                    deleteBtn.style.fontSize = '16px';
+                    deleteBtn.title = 'Delete custom habit';
+                    deleteBtn.onclick = () => {
+                        if (confirm(`Delete "${habit.name}"? This will also delete all logs for this habit.`)) {
+                            delete State.data.habits[key];
+                            delete State.data.habitLog[key];
+                            State.data.events = State.data.events.filter(e => e.habit !== key);
+                            State.save();
+                            UI.update();
+                            renderSettings();
+                            Utils.err('✅ Custom habit deleted');
+                        }
+                    };
+                    headerDiv.appendChild(deleteBtn);
+                }
+
+                // Thresholds section
+                const thresholdsContainer = document.createElement('div');
+                thresholdsContainer.style.display = 'flex';
+                thresholdsContainer.style.flexDirection = 'column';
+                thresholdsContainer.style.gap = '8px';
+                thresholdsContainer.style.paddingLeft = '32px';
+
+                const thresholdsLabel = document.createElement('div');
+                const thresholdUnit = habit.trackingMode === 'money' ? '($)' : '(hours)';
+                thresholdsLabel.textContent = habit.trackingMode === 'money' ? `💰 Money Thresholds ${thresholdUnit}:` : `⏱️ Time Thresholds ${thresholdUnit}:`;
+                thresholdsLabel.style.fontSize = '14px';
+                thresholdsLabel.style.color = 'var(--text-dim)';
+                thresholdsLabel.style.fontWeight = '600';
+
+                const thresholdsGrid = document.createElement('div');
+                thresholdsGrid.style.display = 'grid';
+                thresholdsGrid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                thresholdsGrid.style.gap = '8px';
+
+                const createThresholdInput = (value, label, color) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.display = 'flex';
+                    wrapper.style.flexDirection = 'column';
+                    wrapper.style.gap = '4px';
+
+                    const inputLabel = document.createElement('label');
+                    inputLabel.textContent = label;
+                    inputLabel.style.fontSize = '12px';
+                    inputLabel.style.fontWeight = '600';
+                    inputLabel.style.color = color;
+
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.value = value;
+                    input.min = '0';
+                    input.max = '9999';
+                    input.style.width = '100%';
+                    input.style.margin = '0';
+                    input.style.padding = '8px';
+                    input.style.borderColor = color;
+
+                    wrapper.appendChild(inputLabel);
+                    wrapper.appendChild(input);
+                    return wrapper;
+                };
+
+                // For positive habits or money tracking, reverse the visual order
+                if (habit.isPositive || habit.trackingMode === 'money') {
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[0], '✅ Safe', 'var(--success)'));
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[1], '⚠️ Warning', 'var(--warning)'));
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[2], '🔴 Danger', 'var(--danger)'));
+                } else {
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[0], '🔴 Danger', 'var(--danger)'));
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[1], '⚠️ Warning', 'var(--warning)'));
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[2], '✅ Safe', 'var(--success)'));
+                }
+
+                thresholdsContainer.appendChild(thresholdsLabel);
+                thresholdsContainer.appendChild(thresholdsGrid);
+
+                itemDiv.appendChild(headerDiv);
+                itemDiv.appendChild(thresholdsContainer);
+
+                // Add editable options section (Notes and Spending toggles)
+                const optionsContainer = document.createElement('div');
+                optionsContainer.style.display = 'flex';
+                optionsContainer.style.gap = '12px';
+                optionsContainer.style.paddingLeft = '32px';
+                optionsContainer.style.marginTop = '8px';
+                optionsContainer.style.flexWrap = 'wrap';
+
+                // Notes toggle
+                const noteLabel = document.createElement('label');
+                noteLabel.style.display = 'flex';
+                noteLabel.style.alignItems = 'center';
+                noteLabel.style.gap = '6px';
+                noteLabel.style.cursor = 'pointer';
+                noteLabel.style.fontSize = '13px';
+
+                const noteCheckbox = document.createElement('input');
+                noteCheckbox.type = 'checkbox';
+                noteCheckbox.checked = habit.note || false;
+                noteCheckbox.style.width = 'auto';
+                noteCheckbox.style.margin = '0';
+                noteCheckbox.style.cursor = 'pointer';
+                noteCheckbox.addEventListener('change', () => {
+                    State.data.habits[key].note = noteCheckbox.checked;
+                    State.save();
+                    Utils.err(`✅ ${habit.name}: Notes ${noteCheckbox.checked ? 'enabled' : 'disabled'}`);
+                });
+
+                noteLabel.appendChild(noteCheckbox);
+                noteLabel.appendChild(document.createTextNode('📝 Ask for notes'));
+                optionsContainer.appendChild(noteLabel);
+
+                // Spending toggle (only for time-based habits)
+                if (habit.trackingMode !== 'money') {
+                    const spendingLabel = document.createElement('label');
+                    spendingLabel.style.display = 'flex';
+                    spendingLabel.style.alignItems = 'center';
+                    spendingLabel.style.gap = '6px';
+                    spendingLabel.style.cursor = 'pointer';
+                    spendingLabel.style.fontSize = '13px';
+
+                    const spendingCheckbox = document.createElement('input');
+                    spendingCheckbox.type = 'checkbox';
+                    spendingCheckbox.checked = habit.trackSpending || false;
+                    spendingCheckbox.style.width = 'auto';
+                    spendingCheckbox.style.margin = '0';
+                    spendingCheckbox.style.cursor = 'pointer';
+                    spendingCheckbox.addEventListener('change', () => {
+                        State.data.habits[key].trackSpending = spendingCheckbox.checked;
+                        State.save();
+                        Utils.err(`✅ ${habit.name}: Spending tracking ${spendingCheckbox.checked ? 'enabled' : 'disabled'}`);
+                    });
+
+                    spendingLabel.appendChild(spendingCheckbox);
+                    spendingLabel.appendChild(document.createTextNode('💵 Track spending'));
+                    optionsContainer.appendChild(spendingLabel);
+                }
+
+                itemDiv.appendChild(optionsContainer);
+
+                // Show habit type badges (only for tracking mode and positive habit)
+                const badgeContainer = document.createElement('div');
+                badgeContainer.style.display = 'flex';
+                badgeContainer.style.gap = '8px';
+                badgeContainer.style.paddingLeft = '32px';
+                badgeContainer.style.marginTop = '8px';
+
+                if (habit.trackingMode === 'money') {
+                    const badge = document.createElement('span');
+                    const periodLabel = habit.timePeriod === 'weekly' ? 'Weekly' :
+                        habit.timePeriod === 'monthly' ? 'Monthly' :
+                            `${habit.customDays} days`;
+                    badge.textContent = `💰 ${periodLabel}`;
+                    badge.style.background = 'var(--info)';
+                    badge.style.color = 'white';
+                    badge.style.padding = '4px 8px';
+                    badge.style.borderRadius = '4px';
+                    badge.style.fontSize = '11px';
+                    badge.style.fontWeight = 'bold';
+                    badgeContainer.appendChild(badge);
+                }
+
+                if (badgeContainer.children.length > 0) {
+                    itemDiv.appendChild(badgeContainer);
+                }
+
+                configDiv.appendChild(itemDiv);
+            });
+
+            container.appendChild(configDiv);
+
+            // Add explanation box
+            const explanationBox = document.createElement('div');
+            explanationBox.style.background = 'var(--bg-light)';
+            explanationBox.style.padding = '16px';
+            explanationBox.style.borderRadius = '12px';
+            explanationBox.style.marginTop = '20px';
+            explanationBox.style.border = '1px solid var(--border)';
+            explanationBox.innerHTML = `
+        <h3 style="margin:0 0 8px 0; color:var(--primary); font-size:15px;">💡 Thresholds explained:</h3>
+        <div style="color:var(--text-dim); font-size:13px; line-height:1.6;">
+            <strong style="color:var(--danger);">🔴 Danger</strong> < <strong style="color:var(--warning);">⚠️ Warning</strong> < <strong style="color:var(--success);">✅ Safe</strong>
+            <br>
+            <span style="opacity:0.8;">Example: [1, 2, 4] hours → Red if <1hr, Yellow if 1-2hr, Green if 2+ hr</span>
+        </div>
+    `;
+            container.appendChild(explanationBox);
+
+            // Add event listeners for spending toggles
+            document.querySelectorAll('[data-spending]').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const key = e.target.dataset.spending;
+                    State.data.habits[key].trackSpending = e.target.checked;
+                });
+            });
+
+            // Update sound settings UI
+            $('soundType').value = Sound.settings.type;
+            $('volumeSlider').value = Sound.settings.volume * 100;
+            $('volumeDisplay').textContent = Math.round(Sound.settings.volume * 100) + '%';
+            $('soundRepeat').value = Sound.settings.repeat;
+        }
+    </script>
+    <button id="installBtn" class="btn btn-primary" style="display:none; position:fixed; right:16px; bottom:16px; z-index:1000;">Install App</button>
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(console.error);
+      });
+    }
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('installBtn');
+      btn.style.display = 'inline-block';
+      btn.onclick = async () => {
+        btn.disabled = true;
+        await deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        btn.style.display = 'none';
+      };
+    });
+    window.addEventListener('appinstalled', () => {
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'none';
+    });
     </script>
 </body>
 

@@ -1,11 +1,13 @@
 {
+    "id": "./",
     "name": "Champion's Forge",
     "short_name": "Forge",
     "description": "Eternal productivity tracker",
-    "start_url": "forge.html",
+    "start_url": "./",
+    "scope": "./",
     "display": "standalone",
-    "background_color": "#000000",
-    "theme_color": "#00ffff",
+    "background_color": "#0a0e27",
+    "theme_color": "#4a90e2",
     "orientation": "portrait",
     "icons": [
         {
