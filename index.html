@@ -1210,21 +1210,21 @@
 
                 // Start both RAF and background interval
                 this.lastUpdate = performance.now();
-                this.animationLoop();
+                this.instance = requestAnimationFrame((timestamp) => this.animationLoop(timestamp));
                 this.startBackgroundInterval();
             },
 
-            animationLoop() {
+            animationLoop(timestamp) {
                 if (!State.data.timer.running) return;
 
-                const now = performance.now();
+                const now = timestamp || performance.now();
                 // Update every ~200ms (reduce CPU usage)
                 if (now - this.lastUpdate >= 200) {
                     this.tick();
                     this.lastUpdate = now;
                 }
 
-                this.instance = requestAnimationFrame(() => this.animationLoop());
+                this.instance = requestAnimationFrame((ts) => this.animationLoop(ts));
             },
 
             tick() {
