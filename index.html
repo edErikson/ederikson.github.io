@@ -1400,16 +1400,20 @@
                     else {
                         const hours = last ? (Date.now() - last) / 3600000 : 999;
 
-                        // Time thresholds: t1=safe, t2=warning, t3=danger (descending order for display)
-                        // Positive habits (inverted logic - good when done recently)
+                        // Thresholds are ALWAYS stored as [danger, warning, safe] in ascending hours
+                        // For negative habits: hours < t1 (danger) is bad (done recently)
+                        // For positive habits: hours > t3 (safe) is bad (not done recently)
+
                         if (habit.isPositive) {
-                            if (hours > t3) { status = 'danger'; color = 'var(--danger)'; }
-                            else if (hours > t2) { status = 'warning'; color = 'var(--warning)'; }
-                            else { status = 'safe'; color = 'var(--success)'; }
+                            // Positive habits: Good when done recently, bad when old
+                            // Interpret thresholds in reverse: t1=safe, t2=warning, t3=danger
+                            if (hours < t1) { status = 'safe'; color = 'var(--success)'; }
+                            else if (hours < t2) { status = 'warning'; color = 'var(--warning)'; }
+                            else { status = 'danger'; color = 'var(--danger)'; }
                         }
-                        // Negative habits (normal logic - bad when done recently)
                         else {
-                            // thresholds are stored as [danger, warning, safe] for time-based habits
+                            // Negative habits: Bad when done recently, good when old
+                            // Normal interpretation: t1=danger, t2=warning, t3=safe
                             if (hours < t1) { status = 'danger'; color = 'var(--danger)'; }
                             else if (hours < t2) { status = 'warning'; color = 'var(--warning)'; }
                             else { status = 'safe'; color = 'var(--success)'; }
@@ -2078,8 +2082,11 @@
 
                 const trackingMode = isMoneyTracking ? 'money' : 'time';
 
-                // For money mode, thresholds are stored in reverse order due to visual swap
+                // Money mode: UI visually swaps to show Safe -> Warning -> Danger
                 // t3 is Safe (lowest), t2 is Warning, t1 is Danger (highest)
+                // Time mode: UI shows based on positive flag
+                //   Negative: Danger -> Warning -> Safe (t1, t2, t3)
+                //   Positive: Labels flip but inputs stay same, store as [t1, t2, t3]
                 let thresholds;
                 if (isMoneyTracking) {
                     // Validate ascending: Safe < Warning < Danger
@@ -2089,12 +2096,15 @@
                     }
                     thresholds = [t3, t2, t1]; // Store as [Safe, Warning, Danger] = [100, 200, 300]
                 } else {
-                    // Validate ascending: Danger < Warning < Safe
+                    // For both positive and negative time habits:
+                    // Always validate and store as ascending hours: [smallest, middle, largest]
                     if (t1 >= t2 || t2 >= t3) {
                         Utils.err(`Thresholds must be in ascending order (e.g., 1hr, 2hr, 4hr)`);
                         return;
                     }
-                    thresholds = [t1, t2, t3]; // Store as [Danger, Warning, Safe] = [1, 2, 4]
+                    // Store as [t1, t2, t3] = [1, 2, 4] for both types
+                    // Positive habits will interpret these in reverse during rendering
+                    thresholds = [t1, t2, t3];
                 }
 
                 // Calculate period in days
@@ -2123,40 +2133,51 @@
                 State.save();
                 UI.update();
 
+                // Clear and reset form BEFORE closing modal
+                $('customHabitName').value = '';
+                $('customHabitIcon').selectedIndex = 0;
+                $('customThreshold1').value = '1';
+                $('customThreshold2').value = '2';
+                $('customThreshold3').value = '4';
+                $('customHabitNote').checked = false;
+                $('customHabitSpendingCheck').checked = false;
+                $('customHabitSpending').checked = false;
+                $('customHabitPositive').checked = false;
+                $('timePeriodSection').style.display = 'none';
+                $('customHabitPositive').parentElement.style.display = 'flex';
+
+                // Reset threshold display to time mode
+                const title = $('thresholdTitle');
+                title.textContent = '⏱️ Time Thresholds (hours):';
+
+                // Reset labels and colors
+                const label1 = $('label1');
+                const label2 = $('label2');
+                const label3 = $('label3');
+                label1.textContent = '🔴 Danger';
+                label1.style.color = 'var(--danger)';
+                label2.textContent = '⚠️ Warning';
+                label2.style.color = 'var(--warning)';
+                label3.textContent = '✅ Safe';
+                label3.style.color = 'var(--success)';
+
+                // Ensure DOM order is correct for time mode
+                const thresholdGrid = $('timeThresholdsSection').querySelector('div');
+                const container1 = $('threshold1Container');
+                const container2 = $('threshold2Container');
+                const container3 = $('threshold3Container');
+
+                // Only reorder if needed
+                if (thresholdGrid.children[0] !== container1) {
+                    thresholdGrid.innerHTML = '';
+                    thresholdGrid.appendChild(container1);
+                    thresholdGrid.appendChild(container2);
+                    thresholdGrid.appendChild(container3);
+                }
+
                 Modal.close();
 
-                // Clear form after a short delay (wait for modal to start closing)
-                setTimeout(() => {
-                    $('customHabitName').value = '';
-                    $('customHabitIcon').selectedIndex = 0; // Reset dropdown to first option
-                    $('customThreshold1').value = '1';
-                    $('customThreshold2').value = '2';
-                    $('customThreshold3').value = '4';
-                    $('customHabitNote').checked = false;
-                    $('customHabitSpendingCheck').checked = false;
-                    $('customHabitSpending').checked = false;
-                    $('customHabitPositive').checked = false;
-                    $('timePeriodSection').style.display = 'none';
-                    $('customHabitPositive').parentElement.style.display = 'flex'; // Show positive habit checkbox
-
-                    // Reset to time mode display
-                    const title = $('thresholdTitle');
-                    title.textContent = '⏱️ Time Thresholds (hours):';
-                    const thresholdGrid = $('timeThresholdsSection').querySelector('div');
-                    thresholdGrid.innerHTML = '';
-                    thresholdGrid.appendChild($('threshold1Container'));
-                    thresholdGrid.appendChild($('threshold2Container'));
-                    thresholdGrid.appendChild($('threshold3Container'));
-                    $('label1').textContent = '🔴 Danger';
-                    $('label2').textContent = '⚠️ Warning';
-                    $('label3').textContent = '✅ Safe';
-                }, 350);
-
                 Utils.err('✅ Custom habit created successfully!');
-
-                // Switch to settings tab to show the new habit
-                document.querySelector('[data-tab="settings"]').click();
-                renderSettings(); // Refresh settings view to show new habit
             }
         };
 
@@ -2176,14 +2197,18 @@
                         State.data.habits[key].enabled = enabled;
 
                         if (nums.length === 3) {
-                            const [a, b, c] = nums; // visual order per habit type
+                            const [a, b, c] = nums; // visual order from UI
                             let mapped;
                             if (habit.trackingMode === 'money') {
                                 // UI shows Safe, Warning, Danger → store [safe, warning, danger]
                                 mapped = [a, b, c];
                             } else if (habit.isPositive) {
-                                // UI shows Safe, Warning, Danger → store [danger, warning, safe]
-                                mapped = [c, b, a];
+                                // UI shows Safe, Warning, Danger (labels flipped)
+                                // But inputs are still t1, t2, t3 in DOM order
+                                // User enters ascending values: 1, 2, 4
+                                // We store them as-is: [1, 2, 4]
+                                // Rendering will interpret t1=safe, t2=warning, t3=danger for positive
+                                mapped = [a, b, c];
                             } else {
                                 // UI shows Danger, Warning, Safe → store [danger, warning, safe]
                                 mapped = [a, b, c];
@@ -2695,12 +2720,23 @@
                     return wrapper;
                 };
 
-                // For positive habits or money tracking, reverse the visual order
-                if (habit.isPositive || habit.trackingMode === 'money') {
+                // Display thresholds based on habit type
+                // Money: stored as [safe, warning, danger], display as Safe -> Warning -> Danger
+                // Positive time: stored as [t1, t2, t3] ascending, display with flipped labels
+                // Negative time: stored as [danger, warning, safe], display as Danger -> Warning -> Safe
+                if (habit.trackingMode === 'money') {
+                    // Money habits: display in stored order (safe, warning, danger)
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[0], '✅ Safe', 'var(--success)'));
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[1], '⚠️ Warning', 'var(--warning)'));
+                    thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[2], '🔴 Danger', 'var(--danger)'));
+                } else if (habit.isPositive) {
+                    // Positive time habits: stored as [1, 2, 4] but with flipped labels
+                    // t1 (1hr) = safe when recent, t3 (4hr) = danger when old
                     thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[0], '✅ Safe', 'var(--success)'));
                     thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[1], '⚠️ Warning', 'var(--warning)'));
                     thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[2], '🔴 Danger', 'var(--danger)'));
                 } else {
+                    // Negative time habits: stored as [danger, warning, safe]
                     thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[0], '🔴 Danger', 'var(--danger)'));
                     thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[1], '⚠️ Warning', 'var(--warning)'));
                     thresholdsGrid.appendChild(createThresholdInput(habit.thresholds[2], '✅ Safe', 'var(--success)'));
